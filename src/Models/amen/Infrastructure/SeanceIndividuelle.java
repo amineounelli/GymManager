@@ -8,6 +8,28 @@ package Models.amen.Infrastructure;
  *
  * @author DELL
  */
-public class SeanceIndividuelle {
-    
+
+
+import Models.amine.Personnel.Membre;
+
+public final class SeanceIndividuelle extends Seance {
+    private Membre membre;
+
+    public SeanceIndividuelle(int idSeance, double duree, java.util.Date date, Salle salle, double coutHoraire, Membre membre) {
+        super(idSeance, duree, date, salle, coutHoraire);
+        this.membre = membre;
+    }
+
+    @Override
+    public void afficherDetail() {
+        System.out.println("=== Séance Individuelle ===");
+        System.out.println("ID : " + idSeance);
+        System.out.println("Date : " + date);
+        System.out.println("Durée : " + duree + "h");
+        System.out.println("Coût total : " + calculerCoutTotal() + " DT");
+        System.out.println("Salle : " + salle.getNomSalle());
+        System.out.println("Membre : " + membre.getNom() + " " + membre.getPrenom());
+    }
 }
+
+

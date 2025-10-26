@@ -8,6 +8,16 @@ package Models.amen.Infrastructure;
  *
  * @author DELL
  */
-public class Equipement {
-    
+
+
+public record Equipement(int idEquipement, String nom, String etat) {
+
+    public boolean verifierEtat() {
+        return etat != null && etat.equalsIgnoreCase("fonctionnel");
+    }
+
+    public void afficherDetailsEquipement() {
+        System.out.println("Équipement #" + idEquipement + " : " + nom + " (État : " + etat + ")");
+    }
 }
+
