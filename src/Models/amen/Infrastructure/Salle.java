@@ -48,7 +48,6 @@ public class Salle {
         }
     }
 
-    // Getters
     public int getIdSalle() { return idSalle; }
     public String getNomSalle() { return nomSalle; }
     public int getCapaciteSalle() { return capaciteSalle; }

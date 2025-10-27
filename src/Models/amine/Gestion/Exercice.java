@@ -10,7 +10,7 @@ public record Exercice(String nom, int repetitions, double poids, double duree, 
 
     public void afficherExercice() {
         System.out.println(nom + " | Reps: " + repetitions + " | Poids (en kg): " + poids +
-                " | Durée (en minute): " + duree + " | Équipement: " + equipement.getNom());
+                " | Durée (en minute): " + duree + " | Équipement: " + equipement.nom());
     }
 
     public double getDuree() {

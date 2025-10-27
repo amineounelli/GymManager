@@ -29,7 +29,6 @@ public abstract sealed class Seance permits SeanceIndividuelle, SeanceCollective
 
     public abstract void afficherDetail();
 
-    // Getters
     public int getIdSeance() { return idSeance; }
     public double getDuree() { return duree; }
     public Date getDate() { return date; }
