@@ -19,5 +19,7 @@ public record Equipement(int idEquipement, String nom, String etat) {
     public void afficherDetailsEquipement() {
         System.out.println("Équipement #" + idEquipement + " : " + nom + " (État : " + etat + ")");
     }
+
+
 }
 

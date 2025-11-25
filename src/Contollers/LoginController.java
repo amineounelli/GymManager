@@ -4,6 +4,7 @@
  */
 package Contollers;
 
+import Views.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
@@ -29,11 +30,17 @@ public class LoginController {
         String password = passwordField.getText();
 
         if ("amine".equals(username) && "1234".equals(password)) {
+            MainApp.showMainMenu();
             messageLabel.setText("Login successful");
             messageLabel.setStyle("-fx-text-fill: green;");
         } else {
             messageLabel.setText("Invalid informations");
             messageLabel.setStyle("-fx-text-fill: red;");
         }
-    }  
+    }
+
+    @FXML
+    private void handleExit() {
+        System.exit(0);
+    }
 }

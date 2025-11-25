@@ -21,6 +21,10 @@ public class Reservation {
         this.dateReservation = dateReservation;
     }
 
+    public Reservation() {
+
+    }
+
     public int getIdReservation() { return idReservation; }
     public Membre getMembre() { return membre; }
     public Seance getSeance() { return seance; }
