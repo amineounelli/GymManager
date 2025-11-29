@@ -42,4 +42,29 @@ public final class Coach extends Personne {
     public void afficherInfo() {
         System.out.println("Coach: " + nom + " " + prenom + " | Spécialité: " + specialite);
     }
+
+    public String getSpecialite() {
+        return specialite;
+    }
+
+    public double getTarifHeure() {
+        return tarifHeure;
+    }
+
+    public List<SeanceCollective> getListeSeances() {
+        return listeSeances;
+    }
+
+    public void setSpecialite(String specialite) {
+        this.specialite = specialite;
+    }
+
+    public void setTarifHeure(double tarifHeure) {
+        this.tarifHeure = tarifHeure;
+    }
+
+    public void setListeSeances(List<SeanceCollective> listeSeances) {
+        this.listeSeances = listeSeances;
+    }
+
 }

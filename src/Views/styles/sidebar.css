@@ -1,0 +1,28 @@
+/* Base style — EXACT same as before */
+.sidebar-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e2e8f0;
+    -fx-font-size: 15px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 12 10 12 14;
+    -fx-background-radius: 0;
+    -fx-border-color: transparent;
+}
+
+/* Hover = just brighter text */
+.sidebar-btn:hover {
+    -fx-text-fill: white;
+}
+
+/* Selected — ONLY Neon Left Bar & brighter text. NO grey, NO background. */
+.selected-button {
+    -fx-text-fill: #ffffff;
+
+    /* Neon left bar */
+    -fx-border-width: 0 0 0 3;
+    -fx-border-color: linear-gradient(to bottom, #06e4e4, #0bd468);
+    -fx-border-insets: 0 0 0 -3;
+
+    /* Slight glow to fit your theme */
+    -fx-effect: dropshadow(gaussian, rgba(6,228,228,0.38), 15, 0.2, 0, 0);
+}

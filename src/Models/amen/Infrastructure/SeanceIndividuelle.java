@@ -20,6 +20,10 @@ public final class SeanceIndividuelle extends Seance {
         this.membre = membre;
     }
 
+    public Membre getMembre() {
+        return membre;
+    }
+
     @Override
     public void afficherDetail() {
         System.out.println("=== Séance Individuelle ===");

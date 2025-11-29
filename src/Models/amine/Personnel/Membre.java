@@ -1,11 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models.amine.Personnel;
 
 import Models.amine.Gestion.*;
 import Models.amen.Infrastructure.*;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +12,7 @@ public final class Membre extends Personne {
     private Abonnement abonnement;
     private List<Seance> listeSeances;
     private List<Reservation> listeReservations;
-    private List<Paiement> listePaiements;
+    private List<Paiement> listePaiements = new ArrayList<>();
     private ProgrammeEntrainement programme;
 
     public Membre(int id, String nom, String prenom, String email, String telephone) {
@@ -24,8 +21,11 @@ public final class Membre extends Personne {
         this.listeReservations = new ArrayList<>();
     }
 
+    public Abonnement getAbonnement() { return abonnement; }
+    public void setAbonnement(Abonnement abonnement) { this.abonnement = abonnement; }
+
     public List<Reservation> getListeReservations() { return listeReservations; }
-    
+
     public void ajouterSeance(Seance s) { listeSeances.add(s); }
     public void supprimerSeance(Seance s) { listeSeances.remove(s); }
 
@@ -33,14 +33,11 @@ public final class Membre extends Personne {
     public void supprimerReservation(Reservation r) { listeReservations.remove(r); }
 
     public void effectuerPaiement(Paiement p) {
-    if (p != null) {
-        p.setDatePaiement(new Date());
-        listePaiements.add(p);
-        System.out.println("Paiement effectué par " + getNom());
-    } else {
-        System.out.println("Paiement invalide.");
+        if (p != null) {
+            p.setDatePaiement(new Date());
+            listePaiements.add(p);
+        }
     }
-}
 
     public void consulterProgramme() {
         if (programme != null) programme.afficherProgramme();
@@ -57,8 +54,16 @@ public final class Membre extends Personne {
         return (abonnement != null) ? abonnement.getEtat() : "Aucun abonnement";
     }
 
+    public boolean isAbonneActif() {
+        return abonnement != null && abonnement.getEtat().equalsIgnoreCase("Actif");
+    }
+
     @Override
     public void afficherInfo() {
         System.out.println("Membre: " + nom + " " + prenom + " | Email: " + email);
+    }
+
+    public List<Seance> getListeSeances() {
+        return listeSeances;
     }
 }

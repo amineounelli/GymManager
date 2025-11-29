@@ -6,7 +6,7 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Contollers.MenuController"
+            fx:controller="Controllers.MenuController"
             prefHeight="700.0" prefWidth="1000.0"
             stylesheets="@menu.css">
 

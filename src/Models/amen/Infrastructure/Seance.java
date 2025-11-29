@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public abstract sealed class Seance permits SeanceIndividuelle, SeanceCollective {
-    protected int idSeance;
+    public int idSeance;
     protected double duree;
     protected Date date;
     protected Salle salle;

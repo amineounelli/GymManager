@@ -1,0 +1,28 @@
+.root {
+    -fx-background-color: #1e293b;
+    -fx-text-fill: white;
+}
+
+.card {
+    -fx-background-color: #0f172a;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+}
+
+.btn-primary {
+    -fx-background-color: linear-gradient(to right, #0affbf, #00c3ff);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+}
+
+.btn-danger {
+    -fx-background-color: #dc2626;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+}
+
+.table-view {
+    -fx-background-color: #0f172a;
+    -fx-text-fill: white;
+}

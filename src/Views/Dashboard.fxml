@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Controllers.DashboardController"
+            style="-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);"
+            prefWidth="1000" prefHeight="800">
+
+    <!-- TITLE -->
+    <VBox spacing="8" layoutX="300" layoutY="30"> <!-- shifted right for sidebar -->
+        <Label text="Dashboard"
+               style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+        <Label text="Overview of gym activity"
+               style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+    </VBox>
+
+    <!-- KPI SECTION (2x2 GRID) -->
+    <VBox spacing="20" layoutX="300" layoutY="110">
+
+        <HBox spacing="20">
+            <!-- Members -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Members" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="membersCount" text="0"
+                       style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Coaches -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Coaches" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="coachesCount" text="0"
+                       style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+        </HBox>
+
+        <HBox spacing="20">
+            <!-- Plans -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Active Plans" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="plansCount" text="0"
+                       style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Equipment -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Equipments" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="equipmentCount" text="0"
+                       style="-fx-text-fill: white; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+        </HBox>
+
+    </VBox>
+
+    <!-- FINANCE SECTION (TITLE) -->
+    <Label text="Financial Overview"
+           layoutX="300" layoutY="380"
+           style="-fx-text-fill: #e2e8f0; -fx-font-size: 18px; -fx-font-weight: bold;"/>
+
+    <!-- FINANCES GRID (2x2) -->
+    <VBox spacing="20" layoutX="300" layoutY="420">
+
+        <HBox spacing="20">
+
+            <!-- Monthly Revenue -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Monthly Revenue" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="monthlyRevenue" text="0 DT"
+                       style="-fx-text-fill: #4ade80; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Today's Revenue -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Today's Revenue" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="todayRevenue" text="0 DT"
+                       style="-fx-text-fill: #4ade80; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+        </HBox>
+
+        <HBox spacing="20">
+
+            <!-- Pending Payments -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Pending Payments (Total)" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="totalPendingPayments" text="0 DT"
+                       style="-fx-text-fill: #fbbf24; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+            <!-- Monthly Expenses -->
+            <VBox spacing="8" prefWidth="260" prefHeight="120"
+                  style="-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 20;">
+                <Label text="Expenses This Month" style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;"/>
+                <Label fx:id="monthlyExpenses" text="0 DT"
+                       style="-fx-text-fill: #f87171; -fx-font-size: 26px; -fx-font-weight: bold;"/>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+</AnchorPane>

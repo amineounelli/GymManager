@@ -1,0 +1,32 @@
+.table-view {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-background-color: #0f172a;
+    -fx-background-insets: 0;
+    -fx-padding: 8 0 8 0;
+    -fx-border-color: #1e293b;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #1b2434;
+}
+
+.action-button {
+    -fx-background-radius: 16;
+    -fx-padding: 4 10;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER;
+    -fx-font-weight: bold;
+}
+
+.action-edit {
+    -fx-background-color: #3b82f6;
+    -fx-text-fill: white;
+}
+
+.action-delete {
+    -fx-background-color: #ef4444;
+    -fx-text-fill: white;
+}
