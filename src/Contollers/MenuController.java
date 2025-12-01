@@ -333,6 +333,28 @@ public class MenuController {
         }
     }
 
+    @FXML
+    private void handleAfficherMembres() {
+        membresTable.setItems(membres);
+        showMessage("📋 Liste des membres affichée");
+    }
+
+
+    // stream1
+    private List<Membre> getMembresAvecAbonnementActif() {
+        return membres.stream()
+                .filter(m -> abonnements.containsKey(m.getId()))
+                .filter(m -> abonnements.get(m.getId()).verifierValidite())
+                .toList();
+    }
+
+    @FXML
+    private void handleAfficherMembresActifs() {
+        List<Membre> list = getMembresAvecAbonnementActif();
+        membresTable.setItems(FXCollections.observableArrayList(list));
+        showMessage("Liste des membres avec abonnement actif chargée");
+    }
+
     // ==================== COACHS ====================
 
     @FXML
@@ -512,6 +534,28 @@ public class MenuController {
 
         equipements.remove(selected);
         showMessage("✅ Équipement supprimé");
+    }
+
+    @FXML
+    private void handleAfficherEquipements() {
+        equipementsTable.setItems(equipements);
+        showMessage("📋 Liste des équipements affichée");
+    }
+
+
+    // stream2
+    private List<Equipement> getEquipementsFonctionnels() {
+        return equipements.stream()
+                .filter(Equipement::verifierEtat)
+                .sorted(Comparator.comparing(Equipement::nom))
+                .toList();
+    }
+
+    @FXML
+    private void handleAfficherEquipementsFonctionnels() {
+        List<Equipement> list = getEquipementsFonctionnels();
+        equipementsTable.setItems(FXCollections.observableArrayList(list));
+        showMessage("Liste des équipements fonctionnels chargée");
     }
 
     // ==================== ABONNEMENTS ====================
