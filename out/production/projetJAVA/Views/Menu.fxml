@@ -46,6 +46,8 @@
                     <HBox spacing="10">
                         <Button text="➕ Ajouter" onAction="#handleAjouterMembre" styleClass="btn-green"/>
                         <Button text="🗑️ Supprimer" onAction="#handleSupprimerMembre" styleClass="btn-red"/>
+                        <Button text="Membres Actifs" onAction="#handleAfficherMembresActifs"/>
+                        <Button text="Afficher Membres" onAction="#handleAfficherMembres"/>
                     </HBox>
 
                     <TableView fx:id="membresTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
@@ -146,6 +148,8 @@
                         <ComboBox fx:id="etatEquipComboBox" promptText="État" prefWidth="150"/>
                         <Button text="➕ Ajouter" onAction="#handleAjouterEquipement" styleClass="btn-green"/>
                         <Button text="🗑️ Supprimer" onAction="#handleSupprimerEquipement" styleClass="btn-red"/>
+                        <Button text="Équipements Fonctionnels" onAction="#handleAfficherEquipementsFonctionnels"/>
+                        <Button text="Afficher Équipements" onAction="#handleAfficherEquipements"/>
                     </HBox>
 
                     <HBox spacing="10">
