@@ -64,4 +64,12 @@ public final class Manager extends Personne {
         System.out.println("Manager: " + nom + " " + prenom + " | Login: " + login +
                 " " + motDePasse);
     }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public String getMotDePasse() {
+        return motDePasse;
+    }
 }

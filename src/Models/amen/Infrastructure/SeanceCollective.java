@@ -56,5 +56,18 @@ public final class SeanceCollective extends Seance {
         System.out.println("Coût total : " + calculerCoutTotal() + " DT");
         afficherParticipants();
     }
+
+    public Coach getCoach() {
+        return coach;
+    }
+
+    public int getCapacite() {
+        return capacite;
+    }
+
+    public List<Membre> getListeParticipants() {
+        return listeParticipants;
+    }
+
 }
 

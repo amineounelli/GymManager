@@ -34,4 +34,9 @@ public class Paiement {
         System.out.println("Paiement #" + idPaiement + " | Pae: " + membre + " | Type: " + typePaiement +
                 " | Montant: " + montant + " DT | Date: " + datePaiement);
     }
+
+    public void setIdPaiement(int  generatedId) {
+        this.idPaiement = generatedId;
+    }
+
 }

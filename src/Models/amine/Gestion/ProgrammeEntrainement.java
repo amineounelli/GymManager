@@ -39,11 +39,17 @@ public class ProgrammeEntrainement {
     }
 
     public double calculerDureeTotale() {
-    double total = 0;
-    for (Exercice e : listeExercices) {total += e.getDuree();}
-    this.dureeTotale = total;
-    return total;
-}
+        double total = 0;
+        for (Exercice e : listeExercices) {
+            total += e.duree();  // ← PAS getDuree(), mais duree() !
+        }
+        this.dureeTotale = total;
+        return total;
+    }
+
+    public void setIdProgramme(int idProgramme) {
+        this.idProgramme = idProgramme;
+    }
 
     public void afficherProgramme() {
         System.out.println("Programme : " + titre + " | Coach : " + coach.getNom());

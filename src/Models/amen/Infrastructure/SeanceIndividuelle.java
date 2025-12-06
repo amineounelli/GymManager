@@ -20,6 +20,16 @@ public final class SeanceIndividuelle extends Seance {
         this.membre = membre;
     }
 
+    public Membre getMembre() {
+        return membre;
+    }
+
+    // ==================== SETTER ====================
+    public void setMembre(Membre membre) {
+        this.membre = membre;
+    }
+
+
     @Override
     public void afficherDetail() {
         System.out.println("=== Séance Individuelle ===");
@@ -30,6 +40,7 @@ public final class SeanceIndividuelle extends Seance {
         System.out.println("Salle : " + salle.getNomSalle());
         System.out.println("Membre : " + membre.getNom() + " " + membre.getPrenom());
     }
+
 }
 
 
