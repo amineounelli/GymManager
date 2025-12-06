@@ -42,4 +42,12 @@ public final class Coach extends Personne {
     public void afficherInfo() {
         System.out.println("Coach: " + nom + " " + prenom + " | Spécialité: " + specialite);
     }
+
+    public String getSpecialite() {
+        return specialite;
+    }
+
+    public double getTarifHeure() {
+        return tarifHeure;
+    }
 }

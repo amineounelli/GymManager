@@ -1,5 +1,6 @@
 package Contollers;
 
+import DAO.*;
 import Models.amine.Personnel.*;
 import Models.amen.Infrastructure.*;
 import Models.amine.Gestion.*;
@@ -12,6 +13,8 @@ import javafx.beans.property.SimpleStringProperty;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import Views.MainApp;
+import Database.DatabaseConnection;
+
 
 
 /**
@@ -102,10 +105,10 @@ public class MenuController {
     @FXML private TextField dureeSeanceField;
     @FXML private TextField coutSeanceField;
     @FXML private TextField capaciteSeanceField;
-    @FXML private TableView<SeanceDisplay> seancesTable;
-    @FXML private TableColumn<SeanceDisplay, Integer> seanceIdCol;
-    @FXML private TableColumn<SeanceDisplay, String> seanceTypeCol;
-    @FXML private TableColumn<SeanceDisplay, String> seanceDateCol;
+    @FXML private TableView<Seance> seancesTable;
+    @FXML private TableColumn<Seance, Integer> seanceIdCol;
+    @FXML private TableColumn<Seance, String> seanceTypeCol;
+    @FXML private TableColumn<Seance, String> seanceDateCol;
 
     // ==================== PROGRAMMES ====================
     @FXML private ComboBox<String> coachProgrammeComboBox;
@@ -139,23 +142,35 @@ public class MenuController {
     @FXML private Label messageLabel;
     @FXML private TextArea detailsArea;
 
+    // ==================== ADD THESE DAO INSTANCES ====================
+    private MembreDAO membreDAO;
+    private CoachDAO coachDAO;
+    private ManagerDAO managerDAO;
+    private SalleDAO salleDAO;
+    private EquipementDAO equipementDAO;
+    private AbonnementDAO abonnementDAO;
+    private PaiementDAO paiementDAO;
+    private SeanceDAO seanceDAO;
+    private ReservationDAO reservationDAO;
+
     // ==================== DONNÉES ====================
     private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     // Personnel
-    private ObservableList<Membre> membres = FXCollections.observableArrayList();
-    private ObservableList<Coach> coachs = FXCollections.observableArrayList();
-    private ObservableList<Manager> managers = FXCollections.observableArrayList();
+    private ObservableList<Membre> membres ;
+    private ObservableList<Coach> coachs ;
+    private ObservableList<Manager> managers ;
 
     // Infrastructure
-    private ObservableList<Salle> salles = FXCollections.observableArrayList();
-    private ObservableList<Equipement> equipements = FXCollections.observableArrayList();
+    private ObservableList<Salle> salles ;
+    private ObservableList<Equipement> equipements ;
 
     // Gestion
-    private Map<Integer, Abonnement> abonnements = new HashMap<>();
-    private ObservableList<Paiement> paiements = FXCollections.observableArrayList();
+    private Map<Integer, Abonnement> abonnements ;
+    private final ObservableList<Paiement> paiements = FXCollections.observableArrayList();
     private ObservableList<Seance> seances = FXCollections.observableArrayList();
-    private ObservableList<ProgrammeEntrainement> programmes = FXCollections.observableArrayList();
+    private final ObservableList<ProgrammeEntrainement> programmes = FXCollections.observableArrayList();
+    private final ProgrammeEntrainementDAO programmeDAO = new ProgrammeEntrainementDAO();
     private ObservableList<Reservation> reservations = FXCollections.observableArrayList();
 
     // IDs
@@ -169,6 +184,23 @@ public class MenuController {
 
     @FXML
     public void initialize() {
+        // ==================== STEP 1: TEST DATABASE CONNECTION ====================
+        System.out.println("=== Initialisation du système ===");
+        DatabaseConnection.testConnection();
+
+        // ==================== STEP 2: INITIALIZE ALL DAOs ====================
+        System.out.println("Initialisation des DAOs...");
+        membreDAO = new MembreDAO();
+        coachDAO = new CoachDAO();
+        managerDAO = new ManagerDAO();
+        salleDAO = new SalleDAO();
+        equipementDAO = new EquipementDAO();
+        abonnementDAO = new AbonnementDAO();
+        paiementDAO = new PaiementDAO();
+        seanceDAO = new SeanceDAO();
+        reservationDAO = new ReservationDAO();
+        // ==================== STEP 3: INITIALIZE ALL TABS FIRST ====================
+        System.out.println("Initialisation des onglets...");
         initializeMembresTab();
         initializeCoachsTab();
         initializeManagersTab();
@@ -180,6 +212,185 @@ public class MenuController {
         initializeProgrammesTab();
         initializeReservationsTab();
         initializeStatistiquesTab();
+
+        // ==================== STEP 4: LOAD ALL DATA FROM DATABASE ====================
+        System.out.println("Chargement des données depuis la base de données...");
+        loadAllDataFromDatabase();
+
+        // ==================== STEP 5: DISPLAY ALL DATA IN TABLES ====================
+        System.out.println("Affichage des données dans les tableaux...");
+        afficherToutesLesDonnees();
+
+        // ==================== STEP 6: REFRESH COMBO BOXES ====================
+        rafraichirComboBoxes();
+
+        // ==================== STEP 7: SHOW SUCCESS MESSAGE ====================
+        showMessage("✅ Système chargé avec succès depuis la base de données!");
+        System.out.println("=== Initialisation terminée ===");
+    }
+
+    private void loadAllDataFromDatabase() {
+        try {
+            // Load Membres
+            System.out.println("📥 Chargement des membres...");
+            List<Membre> membresList = membreDAO.getAllMembres();
+            membres = FXCollections.observableArrayList(membresList);
+            System.out.println("✅ " + membres.size() + " membres chargés");
+
+            // Load Coachs
+            System.out.println("📥 Chargement des coachs...");
+            List<Coach> coachsList = coachDAO.getAllCoachs();
+            coachs = FXCollections.observableArrayList(coachsList);
+            System.out.println("✅ " + coachs.size() + " coachs chargés");
+
+            // Load Managers
+            System.out.println("📥 Chargement des managers...");
+            List<Manager> managersList = managerDAO.getAllManagers();
+            managers = FXCollections.observableArrayList(managersList);
+            System.out.println("✅ " + managers.size() + " managers chargés");
+
+            // Load Salles
+            System.out.println("📥 Chargement des salles...");
+            List<Salle> sallesList = salleDAO.getAllSalles();
+            salles = FXCollections.observableArrayList(sallesList);
+            System.out.println("✅ " + salles.size() + " salles chargées");
+
+            // Load Equipements
+            System.out.println("📥 Chargement des équipements...");
+            List<Equipement> equipementsList = equipementDAO.getAllEquipements();
+            equipements = FXCollections.observableArrayList(equipementsList);
+            System.out.println("✅ " + equipements.size() + " équipements chargés");
+
+            System.out.println("Chargement des paiements...");
+            List<Paiement> paiementsList = paiementDAO.getAllPaiements();
+            paiements.clear();                    // On vide d'abord
+            paiements.addAll(paiementsList);      // On remplit avec les nouveaux
+            System.out.println("Paiements chargés : " + paiements.size());
+
+            // Debug : Afficher les détails
+            for (Paiement p : paiements) {
+                System.out.println("   📄 Paiement ID:" + p.getIdPaiement() +
+                        " - Montant:" + p.getMontant() +
+                        " - Membre:" + p.getMembre().getNom());
+            }
+
+            System.out.println("Chargement des séances...");
+            seances.setAll(new SeanceDAO().getAllSeances());
+            System.out.println(seances.size() + " séances chargées depuis la base");
+
+            // Load Abonnements
+            System.out.println("📥 Chargement des abonnements...");
+            abonnements = abonnementDAO.getAllAbonnements();
+            System.out.println("✅ " + abonnements.size() + " abonnements chargés");
+
+            // Après le chargement des séances ou des paiements, ajoute ÇA :
+            // ... tout ton code existant (membres, coachs, salles, paiements, séances...)
+
+            System.out.println("Chargement des programmes d'entraînement...");
+            programmes.setAll(programmeDAO.getAllProgrammes());
+            System.out.println("Programmes chargés : " + programmes.size());
+
+            // Load Reservations
+            System.out.println("📥 Chargement des réservations...");
+            List<Reservation> reservationsList = reservationDAO.getAllReservations();
+            reservations.clear();
+            reservations.addAll(reservationsList);
+            System.out.println("✅ " + reservations.size() + " réservations chargées");
+
+            System.out.println("Toutes les données chargées avec succès !");
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors du chargement des données");
+            e.printStackTrace();
+            showMessage("❌ Erreur lors du chargement des données: " + e.getMessage());
+        }
+    }
+
+    private void afficherToutesLesDonnees() {
+        try {
+            System.out.println("🖥️ Affichage des données dans les tableaux...");
+
+            // Afficher les membres
+            if (membresTable != null && membres != null) {
+                membresTable.setItems(membres);
+                membresTable.refresh();
+                System.out.println("✅ Tableau membres mis à jour (" + membres.size() + " entrées)");
+            }
+
+            // Afficher les coachs
+            if (coachsTable != null && coachs != null) {
+                coachsTable.setItems(coachs);
+                coachsTable.refresh();
+                System.out.println("✅ Tableau coachs mis à jour (" + coachs.size() + " entrées)");
+            }
+
+            // Afficher les managers
+            if (managersTable != null && managers != null) {
+                managersTable.setItems(managers);
+                managersTable.refresh();
+                System.out.println("✅ Tableau managers mis à jour (" + managers.size() + " entrées)");
+            }
+
+            // Afficher les salles
+            if (sallesTable != null && salles != null) {
+                sallesTable.setItems(salles);
+                sallesTable.refresh();
+                System.out.println("✅ Tableau salles mis à jour (" + salles.size() + " entrées)");
+            }
+
+            // Afficher les équipements
+            if (equipementsTable != null && equipements != null) {
+                equipementsTable.setItems(equipements);
+                equipementsTable.refresh();
+                System.out.println("✅ Tableau équipements mis à jour (" + equipements.size() + " entrées)");
+            }
+
+            // Dans afficherToutesLesDonnees()
+            if (seancesTable != null && seances != null) {
+                System.out.println("📊 Affichage des séances...");
+                seancesTable.setItems(seances);
+                seancesTable.refresh();
+                System.out.println("✅ Tableau séances mis à jour (" + seances.size() + " entrées)");
+            }
+
+            if (paiementsTable != null && paiements != null) {
+                System.out.println("📊 Affichage des paiements...");
+                paiementsTable.setItems(paiements);
+                paiementsTable.refresh();
+                System.out.println("✅ Tableau paiements mis à jour (" + paiements.size() + " entrées)");
+            }
+
+            // Afficher les programmes
+            if (programmesTable != null && programmes != null) {
+                System.out.println("\n📊 === AFFICHAGE PROGRAMMES ===");
+                System.out.println("Nombre de programmes: " + programmes.size());
+
+                for (ProgrammeEntrainement p : programmes) {
+                    System.out.println("  📄 ID:" + p.getIdProgramme() +
+                            " - Titre:" + p.getTitre() +
+                            " - Coach:" + (p.getCoach() != null ? p.getCoach().getNom() : "NULL"));
+                }
+
+                programmesTable.setItems(programmes);
+                programmesTable.refresh();
+                System.out.println("✅ Tableau programmes mis à jour");
+            }
+
+
+            // Afficher les abonnements
+            rafraichirTableauAbonnements();
+            System.out.println("✅ Tableau abonnements mis à jour (" + abonnements.size() + " entrées)");
+
+            // Calculer et afficher les statistiques
+            calculerStatistiques();
+            System.out.println("✅ Statistiques calculées");
+
+            System.out.println("✅ Tous les tableaux mis à jour avec succès!");
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors de l'affichage des données: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     // ==================== INITIALISATION DES ONGLETS ====================
@@ -248,31 +459,58 @@ public class MenuController {
     }
 
     private void initializePaiementsTab() {
+        // Initialize ComboBox
         typePaiementComboBox.setItems(FXCollections.observableArrayList(
                 "Espèces", "Carte bancaire", "Virement"));
 
+        // Initialize Table Columns
         paiementIdCol.setCellValueFactory(new PropertyValueFactory<>("idPaiement"));
         paiementMembreCol.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getMembre().getNom() + " " +
                         cellData.getValue().getMembre().getPrenom()));
         paiementTypeCol.setCellValueFactory(new PropertyValueFactory<>("typePaiement"));
         paiementMontantCol.setCellValueFactory(new PropertyValueFactory<>("montant"));
+
+        // ⚠️ LIGNE IMPORTANTE : Lier la liste observable à la table ⚠️
         paiementsTable.setItems(paiements);
     }
 
     private void initializeSeancesTab() {
-        typeSeanceComboBox.setItems(FXCollections.observableArrayList(
-                "Collective", "Individuelle"));
+        typeSeanceComboBox.setItems(FXCollections.observableArrayList("Collective", "Individuelle"));
 
         seanceIdCol.setCellValueFactory(new PropertyValueFactory<>("idSeance"));
-        seanceTypeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
-        seanceDateCol.setCellValueFactory(new PropertyValueFactory<>("dateStr"));
-    }
+        seanceTypeCol.setCellValueFactory(cellData -> {
+            Seance s = cellData.getValue();
+            String type = (s instanceof SeanceCollective) ? "Collective" : "Individuelle";
+            return new SimpleStringProperty(type);
+        });
+        seanceDateCol.setCellValueFactory(cellData ->
+                new SimpleStringProperty(sdf.format(cellData.getValue().getDate()))
+        );
+
+        seancesTable.setItems(seances);}
+
 
     private void initializeProgrammesTab() {
+        System.out.println("\n🔧 === INITIALISATION TAB PROGRAMMES ===");
+
+        if (programmesTable == null) {
+            System.err.println("❌ programmesTable est NULL !");
+            return;
+        }
+
+        System.out.println("✅ programmesTable existe");
+
+        // Configurer les colonnes
         progIdCol.setCellValueFactory(new PropertyValueFactory<>("idProgramme"));
         progTitreCol.setCellValueFactory(new PropertyValueFactory<>("titre"));
+
+        System.out.println("✅ Colonnes configurées");
+
+        // Lier la table
         programmesTable.setItems(programmes);
+
+        System.out.println("✅ Table liée (taille actuelle: " + programmes.size() + ")");
     }
 
     private void initializeReservationsTab() {
@@ -290,6 +528,7 @@ public class MenuController {
     @FXML
     private void handleAjouterMembre() {
         try {
+            // Validate input
             String nom = membreNomField.getText().trim();
             String prenom = membrePrenomField.getText().trim();
             String email = membreEmailField.getText().trim();
@@ -300,15 +539,25 @@ public class MenuController {
                 return;
             }
 
-            Membre membre = new Membre(nextPersonneId++, nom, prenom, email, tel);
-            membres.add(membre);
+            // Create new membre (ID will be set by database)
+            Membre membre = new Membre(0, nom, prenom, email, tel);
 
-            showMessage("✅ Membre ajouté avec succès! ID: " + membre.getId());
-            clearMembreFields();
-            rafraichirComboBoxes();
+            // OLD: membres.add(membre);
+            // NEW: Save to database first, then add to list
+            if (membreDAO.ajouterMembre(membre)) {
+                // Reload all membres to get updated list with correct IDs
+                membres.setAll(membreDAO.getAllMembres());
+                membresTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
+                showMessage("✅ Membre ajouté avec succès! ID: " + membre.getId());
+                clearMembreFields();
+                rafraichirComboBoxes();
+            } else {
+                showMessage("❌ Erreur lors de l'ajout du membre à la base de données");
+            }
 
         } catch (Exception e) {
             showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -320,23 +569,29 @@ public class MenuController {
             return;
         }
 
+        // Confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer le membre");
-        alert.setContentText("Voulez-vous vraiment supprimer " + selected.getNom() + "?");
+        alert.setContentText("Voulez-vous vraiment supprimer " + selected.getNom() + " " + selected.getPrenom() + "?");
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            membres.remove(selected);
-            showMessage("✅ Membre supprimé");
-            rafraichirComboBoxes();
+            if (membreDAO.supprimerMembre(selected.getId())) {
+                membres.remove(selected);
+                showMessage("✅ Membre supprimé de la base de données");
+                rafraichirComboBoxes();
+            } else {
+                showMessage("❌ Erreur lors de la suppression du membre");
+            }
         }
     }
 
     @FXML
     private void handleAfficherMembres() {
+        membres.setAll(membreDAO.getAllMembres());
         membresTable.setItems(membres);
-        showMessage("📋 Liste des membres affichée");
+        showMessage("📋 Liste des membres rechargée depuis la base de données (" + membres.size() + " membres)");
     }
 
 
@@ -374,17 +629,25 @@ public class MenuController {
             }
 
             double tarif = Double.parseDouble(tarifStr);
-            Coach coach = new Coach(nextPersonneId++, nom, prenom, email, tel, specialite, tarif);
-            coachs.add(coach);
+            Coach coach = new Coach(0, nom, prenom, email, tel, specialite, tarif);
 
-            showMessage("✅ Coach ajouté avec succès! ID: " + coach.getId());
-            clearCoachFields();
-            rafraichirComboBoxes();
+            // OLD: coachs.add(coach);
+            // NEW: Save to database
+            if (coachDAO.ajouterCoach(coach)) {
+                coachs.setAll(coachDAO.getAllCoachs());
+                coachsTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
+                showMessage("✅ Coach ajouté avec succès! ID: " + coach.getId());
+                clearCoachFields();
+                rafraichirComboBoxes();
+            } else {
+                showMessage("❌ Erreur lors de l'ajout du coach");
+            }
 
         } catch (NumberFormatException e) {
             showMessage("❌ Tarif invalide");
         } catch (Exception e) {
             showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -396,9 +659,15 @@ public class MenuController {
             return;
         }
 
-        coachs.remove(selected);
-        showMessage("✅ Coach supprimé");
-        rafraichirComboBoxes();
+        // OLD: coachs.remove(selected);
+        // NEW: Delete from database
+        if (coachDAO.supprimerCoach(selected.getId())) {
+            coachs.remove(selected);
+            showMessage("✅ Coach supprimé de la base de données");
+            rafraichirComboBoxes();
+        } else {
+            showMessage("❌ Erreur lors de la suppression du coach");
+        }
     }
 
     // ==================== MANAGERS ====================
@@ -419,14 +688,22 @@ public class MenuController {
                 return;
             }
 
-            Manager manager = new Manager(nextPersonneId++, nom, prenom, email, tel, login, password);
-            managers.add(manager);
+            Manager manager = new Manager(0, nom, prenom, email, tel, login, password);
 
-            showMessage("✅ Manager ajouté avec succès! ID: " + manager.getId());
-            clearManagerFields();
+            // OLD: managers.add(manager);
+            // NEW: Save to database
+            if (managerDAO.ajouterManager(manager)) {
+                managers.setAll(managerDAO.getAllManagers());
+                managersTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
+                showMessage("✅ Manager ajouté avec succès! ID: " + manager.getId());
+                clearManagerFields();
+            } else {
+                showMessage("❌ Erreur lors de l'ajout du manager");
+            }
 
         } catch (Exception e) {
             showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -438,35 +715,84 @@ public class MenuController {
             return;
         }
 
-        managers.remove(selected);
-        showMessage("✅ Manager supprimé");
+        // OLD: managers.remove(selected);
+        // NEW: Delete from database
+        if (managerDAO.supprimerManager(selected.getId())) {
+            managers.remove(selected);
+            showMessage("✅ Manager supprimé de la base de données");
+        } else {
+            showMessage("❌ Erreur lors de la suppression du manager");
+        }
     }
 
     // ==================== SALLES ====================
 
     @FXML
     private void handleCreerSalle() {
+        System.out.println("\n========== CRÉATION SALLE ==========");
+
         try {
             String nom = nomSalleField.getText().trim();
             String capaciteStr = capaciteSalleField.getText().trim();
 
+            // Validation
             if (nom.isEmpty() || capaciteStr.isEmpty()) {
                 showMessage("❌ Veuillez remplir tous les champs");
+                System.err.println("❌ Champs vides");
                 return;
             }
 
             int capacite = Integer.parseInt(capaciteStr);
-            Salle salle = new Salle(nextSalleId++, nom, capacite);
-            salles.add(salle);
+            System.out.println("📝 Création salle: " + nom + " (capacité: " + capacite + ")");
 
-            showMessage("✅ Salle créée avec succès! ID: " + salle.getIdSalle());
-            nomSalleField.clear();
-            capaciteSalleField.clear();
-            rafraichirComboBoxes();
+            // Créer l'objet Salle avec ID 0 (sera mis à jour par la BDD)
+            Salle salle = new Salle(0, nom, capacite);
+
+            // Tenter l'ajout en base de données
+            System.out.println("💾 Tentative d'ajout en BDD...");
+            boolean ajoutReussi = salleDAO.ajouterSalle(salle);
+
+            if (ajoutReussi) {
+                System.out.println("✅ Ajout réussi! ID généré: " + salle.getIdSalle());
+
+                // Recharger TOUTES les salles depuis la base de données
+                System.out.println("🔄 Rechargement de toutes les salles...");
+                List<Salle> sallesList = salleDAO.getAllSalles();
+
+                // Vider et remplir la liste observable
+                salles.clear();
+                salles.addAll(sallesList);
+
+                // Forcer le rafraîchissement de la table
+                sallesTable.setItems(salles);
+                sallesTable.refresh();
+
+                System.out.println("✅ Table mise à jour avec " + salles.size() + " salle(s)");
+
+                showMessage("✅ Salle créée avec succès! ID: " + salle.getIdSalle());
+
+                // Nettoyer les champs
+                nomSalleField.clear();
+                capaciteSalleField.clear();
+
+                // Rafraîchir les ComboBox
+                rafraichirComboBoxes();
+
+            } else {
+                System.err.println("❌ Échec de l'ajout en BDD");
+                showMessage("❌ Erreur lors de la création de la salle");
+            }
 
         } catch (NumberFormatException e) {
+            System.err.println("❌ Capacité invalide: " + e.getMessage());
             showMessage("❌ Capacité invalide");
+        } catch (Exception e) {
+            System.err.println("❌ Erreur inattendue: " + e.getMessage());
+            showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
         }
+
+        System.out.println("========== FIN CRÉATION SALLE ==========\n");
     }
 
     @FXML
@@ -477,9 +803,15 @@ public class MenuController {
             return;
         }
 
-        salles.remove(selected);
-        showMessage("✅ Salle supprimée");
-        rafraichirComboBoxes();
+        // OLD: salles.remove(selected);
+        // NEW: Delete from database
+        if (salleDAO.supprimerSalle(selected.getIdSalle())) {
+            salles.remove(selected);
+            showMessage("✅ Salle supprimée de la base de données");
+            rafraichirComboBoxes();
+        } else {
+            showMessage("❌ Erreur lors de la suppression de la salle");
+        }
     }
 
     // ==================== ÉQUIPEMENTS ====================
@@ -495,12 +827,19 @@ public class MenuController {
                 return;
             }
 
-            Equipement equip = new Equipement(nextEquipId++, nom, etat);
-            equipements.add(equip);
+            Equipement equip = new Equipement(0, nom, etat);
 
-            showMessage("✅ Équipement ajouté! ID: " + equip.idEquipement());
-            nomEquipField.clear();
-            rafraichirComboBoxes();
+            // OLD: equipements.add(equip);
+            // NEW: Save to database
+            if (equipementDAO.ajouterEquipement(equip)) {
+                equipements.setAll(equipementDAO.getAllEquipements());
+                equipementsTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
+                showMessage("✅ Équipement ajouté avec succès!");
+                nomEquipField.clear();
+                rafraichirComboBoxes();
+            } else {
+                showMessage("❌ Erreur lors de l'ajout de l'équipement");
+            }
 
         } catch (Exception e) {
             showMessage("❌ Erreur: " + e.getMessage());
@@ -532,14 +871,22 @@ public class MenuController {
             return;
         }
 
-        equipements.remove(selected);
-        showMessage("✅ Équipement supprimé");
+        // OLD: equipements.remove(selected);
+        // NEW: Delete from database
+        if (equipementDAO.supprimerEquipement(selected.idEquipement())) {
+            equipements.remove(selected);
+            showMessage("✅ Équipement supprimé de la base de données");
+        } else {
+            showMessage("❌ Erreur lors de la suppression de l'équipement");
+        }
     }
 
     @FXML
     private void handleAfficherEquipements() {
+        // Reload from database
+        equipements.setAll(equipementDAO.getAllEquipements());
         equipementsTable.setItems(equipements);
-        showMessage("📋 Liste des équipements affichée");
+        showMessage("📋 Liste des équipements rechargée (" + equipements.size() + " équipements)");
     }
 
 
@@ -593,27 +940,41 @@ public class MenuController {
             }
 
             Abonnement abo = new Abonnement(type, debut, fin);
-            abonnements.put(membre.getId(), abo);
+            abo.activer(); // Activate by default
 
-            showMessage("✅ Abonnement créé pour " + membre.getNom());
-            rafraichirTableauAbonnements();
+            // OLD: abonnements.put(membre.getId(), abo);
+            // NEW: Save to database
+            if (abonnementDAO.ajouterAbonnement(membre.getId(), abo)) {
+                abonnements.put(membre.getId(), abo);
+                showMessage("✅ Abonnement créé pour " + membre.getNom());
+                rafraichirTableauAbonnements();
+            } else {
+                showMessage("❌ Erreur lors de la création de l'abonnement");
+            }
 
         } catch (Exception e) {
             showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void handleAfficherAbonnements() {
+        // Reload from database
+        abonnements = abonnementDAO.getAllAbonnements();
         rafraichirTableauAbonnements();
-        showMessage("✅ Liste des abonnements chargée");
+        showMessage("✅ Liste des abonnements rechargée (" + abonnements.size() + " abonnements)");
     }
 
     // ==================== PAIEMENTS ====================
 
+    // ==================== MÉTHODE CORRIGÉE POUR LES PAIEMENTS ====================
+
     @FXML
     private void handleEffectuerPaiement() {
         try {
+            System.out.println("\n💰 === AJOUT PAIEMENT ===");
+
             String membreNom = membrePaiementComboBox.getValue();
             String type = typePaiementComboBox.getValue();
             String montantStr = montantPaiementField.getText().trim();
@@ -631,23 +992,135 @@ public class MenuController {
                 return;
             }
 
-            Paiement paiement = new Paiement(nextPaiementId++, type, montant, new Date(), membre);
-            paiements.add(paiement);
-            membre.effectuerPaiement(paiement);
+            System.out.println("📝 Création paiement pour : " + membre.getNom());
+            System.out.println("   Type: " + type + ", Montant: " + montant);
 
-            showMessage("✅ Paiement effectué! ID: " + paiement.getIdPaiement());
-            montantPaiementField.clear();
-            calculerStatistiques();
+            Paiement paiement = new Paiement(0, type, montant, new Date(), membre);
+
+            // Save to database
+            System.out.println("💾 Tentative d'ajout en base...");
+            if (paiementDAO.ajouterPaiement(paiement)) {
+                System.out.println("✅ Paiement ajouté à la BD avec ID: " + paiement.getIdPaiement());
+
+                // MÉTHODE 1 : Recharger TOUS les paiements (recommandé)
+                List<Paiement> paiementsList = paiementDAO.getAllPaiements();
+                paiements.clear();
+                paiements.addAll(paiementsList);
+
+                // MÉTHODE 2 ALTERNATIVE : Ajouter directement (plus rapide mais moins sûr)
+                // paiements.add(paiement);
+
+                // Forcer le rafraîchissement complet
+                paiementsTable.setItems(paiements);
+                paiementsTable.refresh();
+
+                System.out.println("✅ Table paiements mise à jour avec " + paiements.size() + " paiement(s)");
+                System.out.println("📊 Contenu table : " + paiementsTable.getItems().size() + " éléments");
+
+                // Update membre's payment history
+                membre.effectuerPaiement(paiement);
+
+                showMessage("✅ Paiement effectué avec succès! ID: " + paiement.getIdPaiement());
+
+                // Clear fields
+                montantPaiementField.clear();
+                typePaiementComboBox.setValue(null);
+                membrePaiementComboBox.setValue(null);
+
+                // Recalculate statistics
+                calculerStatistiques();
+
+            } else {
+                System.err.println("❌ Échec de l'ajout en base");
+                showMessage("❌ Erreur lors de l'enregistrement du paiement");
+            }
 
         } catch (NumberFormatException e) {
+            System.err.println("❌ Montant invalide: " + e.getMessage());
             showMessage("❌ Montant invalide");
+        } catch (Exception e) {
+            System.err.println("❌ Erreur inattendue: " + e.getMessage());
+            showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("=== FIN AJOUT PAIEMENT ===\n");
+    }
+
+// ==================== MÉTHODE POUR AFFICHER LES PAIEMENTS ====================
+
+    @FXML
+    private void handleAfficherPaiements() {
+        System.out.println("\n📥 === RECHARGEMENT PAIEMENTS ===");
+
+        try {
+            // Reload from database
+            List<Paiement> paiementsList = paiementDAO.getAllPaiements();
+
+            // Clear and refill observable list
+            paiements.clear();
+            paiements.addAll(paiementsList);
+
+            // Refresh table
+            paiementsTable.setItems(paiements);
+            paiementsTable.refresh();
+
+            System.out.println("✅ " + paiements.size() + " paiement(s) chargé(s)");
+            showMessage("📋 Liste des paiements rechargée (" + paiements.size() + " paiements)");
+
+            // Optionally recalculate statistics
+            calculerStatistiques();
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur lors du rechargement des paiements");
+            e.printStackTrace();
+            showMessage("❌ Erreur lors du rechargement: " + e.getMessage());
         }
     }
 
+// ==================== MÉTHODE POUR SUPPRIMER UN PAIEMENT ====================
+
+    @FXML
+    private void handleSupprimerPaiement() {
+        Paiement selected = paiementsTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showMessage("❌ Sélectionnez un paiement à supprimer");
+            return;
+        }
+
+        // Confirmation dialog
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Supprimer le paiement");
+        alert.setContentText("Voulez-vous vraiment supprimer ce paiement de " +
+                selected.getMontant() + " DT pour " +
+                selected.getMembre().getNom() + "?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (paiementDAO.supprimerPaiement(selected.getIdPaiement())) {
+                // Reload all payments
+                List<Paiement> paiementsList = paiementDAO.getAllPaiements();
+                paiements.clear();
+                paiements.addAll(paiementsList);
+
+                // Refresh table
+                paiementsTable.setItems(paiements);
+                paiementsTable.refresh();
+
+                showMessage("✅ Paiement supprimé de la base de données");
+                calculerStatistiques();
+            } else {
+                showMessage("❌ Erreur lors de la suppression du paiement");
+            }
+        }
+    }
     // ==================== SÉANCES ====================
 
     @FXML
     private void handleCreerSeance() {
+        System.out.println("\n🏋️ === CRÉATION SÉANCE ===");
+
         try {
             String type = typeSeanceComboBox.getValue();
             String dateStr = dateSeanceField.getText().trim();
@@ -663,66 +1136,227 @@ public class MenuController {
             double duree = Double.parseDouble(dureeStr);
             double cout = Double.parseDouble(coutStr);
 
-            String salleNom = salleSeanceComboBox.getValue();
-            Salle salle = trouverSalleParNom(salleNom);
-
+            Salle salle = trouverSalleParNom(salleSeanceComboBox.getValue());
             if (salle == null) {
-                showMessage("❌ Sélectionnez une salle valide");
+                showMessage("❌ Sélectionnez une salle");
                 return;
             }
 
-            Seance seance;
-            if (type.equals("Collective")) {
-                String coachNom = coachSeanceComboBox.getValue();
-                Coach coach = trouverCoachParNom(coachNom);
+            System.out.println("📝 Type: " + type + ", Durée: " + duree + ", Coût: " + cout);
+            System.out.println("🏢 Salle: " + salle.getNomSalle());
+
+            boolean success = false;
+
+            if ("Collective".equals(type)) {
+                Coach coach = trouverCoachParNom(coachSeanceComboBox.getValue());
                 String capaciteStr = capaciteSeanceField.getText().trim();
+
+                if (coach == null) {
+                    showMessage("❌ Sélectionnez un coach");
+                    return;
+                }
+
+                if (capaciteStr.isEmpty()) {
+                    showMessage("❌ Indiquez la capacité");
+                    return;
+                }
+
                 int capacite = Integer.parseInt(capaciteStr);
+                System.out.println("👤 Coach: " + coach.getNom() + ", Capacité: " + capacite);
 
-                seance = new SeanceCollective(nextSeanceId++, duree, date, salle, cout, coach, capacite);
+                SeanceCollective sc = new SeanceCollective(0, duree, date, salle, cout, coach, capacite);
+                success = seanceDAO.ajouterSeanceCollective(sc);
+
             } else {
-                String membreNom = membreSeanceComboBox.getValue();
-                Membre membre = trouverMembreParNom(membreNom);
+                Membre membre = trouverMembreParNom(membreSeanceComboBox.getValue());
 
-                seance = new SeanceIndividuelle(nextSeanceId++, duree, date, salle, cout, membre);
+                if (membre == null) {
+                    showMessage("❌ Sélectionnez un membre");
+                    return;
+                }
+
+                System.out.println("👤 Membre: " + membre.getNom());
+
+                SeanceIndividuelle si = new SeanceIndividuelle(0, duree, date, salle, cout, membre);
+                success = seanceDAO.ajouterSeanceIndividuelle(si);
             }
 
-            seances.add(seance);
-            showMessage("✅ Séance créée! ID: " + seance.getIdSeance());
-            calculerStatistiques();
+            if (success) {
+                System.out.println("✅ Séance ajoutée en base");
+
+                // RECHARGER TOUTES LES SÉANCES DEPUIS LA BASE
+                List<Seance> seancesList = seanceDAO.getAllSeances();
+                seances.clear();
+                seances.addAll(seancesList);
+
+                // Forcer le rafraîchissement
+                seancesTable.setItems(seances);
+                seancesTable.refresh();
+
+                System.out.println("✅ Table mise à jour avec " + seances.size() + " séance(s)");
+
+                showMessage("✅ Séance ajoutée avec succès!");
+
+                // Clear fields
+                dateSeanceField.clear();
+                dureeSeanceField.clear();
+                coutSeanceField.clear();
+                capaciteSeanceField.clear();
+                typeSeanceComboBox.setValue(null);
+                coachSeanceComboBox.setValue(null);
+                membreSeanceComboBox.setValue(null);
+                salleSeanceComboBox.setValue(null);
+
+                rafraichirComboBoxes();
+
+            } else {
+                System.err.println("❌ Échec de l'ajout en base");
+                showMessage("❌ Échec de l'ajout en base");
+            }
 
         } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            showMessage("❌ Erreur : " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("=== FIN CRÉATION SÉANCE ===\n");
+    }
+
+    @FXML
+    private void handleAfficherSeances() {
+        System.out.println("\n🔄 === RECHARGEMENT MANUEL SÉANCES ===");
+
+        try {
+            // Recharger depuis la base
+            List<Seance> seancesList = seanceDAO.getAllSeances();
+            System.out.println("📥 " + seancesList.size() + " séances chargées depuis la BD");
+
+            // Vider et remplir
+            seances.clear();
+            seances.addAll(seancesList);
+
+            // Forcer le refresh
+            seancesTable.setItems(seances);
+            seancesTable.refresh();
+
+            System.out.println("✅ Table mise à jour");
+            showMessage("📋 " + seances.size() + " séances affichées");
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
             showMessage("❌ Erreur: " + e.getMessage());
         }
     }
 
+    @FXML
+    private void handleSupprimerSeance() {
+        Seance selected = seancesTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showMessage("❌ Sélectionnez une séance à supprimer");
+            return;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Supprimer la séance");
+        alert.setContentText("Voulez-vous vraiment supprimer cette séance?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (seanceDAO.supprimerSeance(selected.getIdSeance())) {
+                // Recharger toutes les séances
+                List<Seance> seancesList = seanceDAO.getAllSeances();
+                seances.clear();
+                seances.addAll(seancesList);
+
+                seancesTable.setItems(seances);
+                seancesTable.refresh();
+
+                showMessage("✅ Séance supprimée de la base de données");
+                rafraichirComboBoxes();
+            } else {
+                showMessage("❌ Erreur lors de la suppression de la séance");
+            }
+        }
+    }
     // ==================== PROGRAMMES ====================
 
     @FXML
     private void handleCreerProgramme() {
+        System.out.println("\n📋 === CRÉATION PROGRAMME ===");
+
         try {
-            String coachNom = coachProgrammeComboBox.getValue();
             String titre = titreProgrammeField.getText().trim();
+            Coach coach = trouverCoachParNom(coachProgrammeComboBox.getValue());
 
-            if (coachNom == null || titre.isEmpty()) {
-                showMessage("❌ Sélectionnez un coach et entrez un titre");
+            if (titre.isEmpty() || coach == null) {
+                showMessage("❌ Titre et coach requis");
                 return;
             }
 
-            Coach coach = trouverCoachParNom(coachNom);
-            if (coach == null) {
-                showMessage("❌ Coach introuvable");
-                return;
+            System.out.println("📝 Titre: " + titre);
+            System.out.println("👤 Coach: " + coach.getNom());
+
+            ProgrammeEntrainement prog = new ProgrammeEntrainement(0, titre, coach);
+
+            // Tenter l'ajout
+            System.out.println("💾 Tentative d'ajout en base...");
+            if (programmeDAO.ajouterProgramme(prog)) {
+                System.out.println("✅ Programme ajouté avec ID: " + prog.getIdProgramme());
+
+                // RECHARGER TOUS LES PROGRAMMES DEPUIS LA BASE
+                List<ProgrammeEntrainement> programmesList = programmeDAO.getAllProgrammes();
+                programmes.clear();
+                programmes.addAll(programmesList);
+
+                // Forcer le rafraîchissement
+                programmesTable.setItems(programmes);
+                programmesTable.refresh();
+
+                System.out.println("✅ Table mise à jour avec " + programmes.size() + " programme(s)");
+
+                showMessage("✅ Programme ajouté avec succès ! ID: " + prog.getIdProgramme());
+                titreProgrammeField.clear();
+                coachProgrammeComboBox.setValue(null);
+                rafraichirComboBoxes();
+            } else {
+                System.err.println("❌ Échec de l'ajout en base");
+                showMessage("❌ Échec de l'ajout en base");
             }
-
-            ProgrammeEntrainement prog = new ProgrammeEntrainement(nextProgrammeId++, titre, coach);
-            programmes.add(prog);
-            coach.creerProgramme(prog);
-
-            showMessage("✅ Programme créé! ID: " + prog.getIdProgramme());
-            titreProgrammeField.clear();
-            rafraichirComboBoxes();
 
         } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            showMessage("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        System.out.println("=== FIN CRÉATION PROGRAMME ===\n");
+    }
+    @FXML
+    private void handleAfficherProgrammes() {
+        System.out.println("\n🔄 === RECHARGEMENT MANUEL PROGRAMMES ===");
+
+        try {
+            // Recharger depuis la base
+            List<ProgrammeEntrainement> programmesList = programmeDAO.getAllProgrammes();
+            System.out.println("📥 " + programmesList.size() + " programmes chargés depuis la BD");
+
+            // Vider et remplir
+            programmes.clear();
+            programmes.addAll(programmesList);
+
+            // Forcer le refresh
+            programmesTable.setItems(programmes);
+            programmesTable.refresh();
+
+            System.out.println("✅ Table mise à jour");
+            showMessage("📋 " + programmes.size() + " programmes affichés");
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
             showMessage("❌ Erreur: " + e.getMessage());
         }
     }
@@ -759,6 +1393,8 @@ public class MenuController {
 
     @FXML
     private void handleCreerReservation() {
+        System.out.println("\n📝 === CRÉATION RÉSERVATION ===");
+
         try {
             String membreNom = membreReservationComboBox.getValue();
             String seanceInfo = seanceReservationComboBox.getValue();
@@ -769,7 +1405,6 @@ public class MenuController {
             }
 
             Membre membre = trouverMembreParNom(membreNom);
-            // Extraire l'ID de la séance depuis seanceInfo
             int seanceId = Integer.parseInt(seanceInfo.split(" - ")[0].replace("ID:", "").trim());
             Seance seance = trouverSeanceParId(seanceId);
 
@@ -778,13 +1413,64 @@ public class MenuController {
                 return;
             }
 
-            Reservation res = new Reservation(nextReservationId++, membre, seance, new Date());
-            reservations.add(res);
+            System.out.println("✅ Membre: " + membre.getNom() + " (ID:" + membre.getId() + ")");
+            System.out.println("✅ Séance: ID " + seance.getIdSeance());
 
-            showMessage("✅ Réservation créée! ID: " + res.getIdReservation());
-            rafraichirTableauReservations();
+            Reservation res = new Reservation(0, membre, seance, new Date());
+
+            System.out.println("💾 Ajout en base...");
+            if (reservationDAO.ajouterReservation(res)) {
+                System.out.println("✅ Ajout réussi!");
+
+                // Attendre un peu pour être sûr que l'insertion est terminée
+                Thread.sleep(100);
+
+                // Recharger
+                System.out.println("🔄 Rechargement des réservations...");
+                List<Reservation> reservationsList = reservationDAO.getAllReservations();
+                reservations.clear();
+                reservations.addAll(reservationsList);
+
+                rafraichirTableauReservations();
+
+                showMessage("✅ Réservation créée! Total: " + reservations.size());
+
+                membreReservationComboBox.setValue(null);
+                seanceReservationComboBox.setValue(null);
+
+            } else {
+                showMessage("❌ Échec de l'ajout");
+            }
 
         } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
+            showMessage("❌ Erreur: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleAfficherReservations() {
+        System.out.println("\n🔄 === RECHARGEMENT RÉSERVATIONS ===");
+
+        try {
+            // Recharger depuis la base
+            List<Reservation> reservationsList = reservationDAO.getAllReservations();
+            System.out.println("📥 " + reservationsList.size() + " réservations chargées depuis la BD");
+
+            // Vider et remplir
+            reservations.clear();
+            reservations.addAll(reservationsList);
+
+            // Forcer le refresh
+            rafraichirTableauReservations();
+
+            System.out.println("✅ Table mise à jour");
+            showMessage("📋 " + reservations.size() + " réservations affichées");
+
+        } catch (Exception e) {
+            System.err.println("❌ Erreur: " + e.getMessage());
+            e.printStackTrace();
             showMessage("❌ Erreur: " + e.getMessage());
         }
     }
@@ -1076,6 +1762,9 @@ public class MenuController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Close database connection before logout
+            DatabaseConnection.closeConnection();
+            System.out.println("=== Déconnexion et fermeture de la base de données ===");
             MainApp.logout();
         }
     }
@@ -1105,21 +1794,7 @@ public class MenuController {
         public String getValide() { return valide; }
     }
 
-    public static class SeanceDisplay {
-        private final int idSeance;
-        private final String type;
-        private final String dateStr;
 
-        public SeanceDisplay(int idSeance, String type, String dateStr) {
-            this.idSeance = idSeance;
-            this.type = type;
-            this.dateStr = dateStr;
-        }
-
-        public int getIdSeance() { return idSeance; }
-        public String getType() { return type; }
-        public String getDateStr() { return dateStr; }
-    }
 
     public static class ReservationDisplay extends Reservation {
         private final int idReservation;
