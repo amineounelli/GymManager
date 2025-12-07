@@ -1,8 +1,8 @@
 package Controllers.Members;
 
 import Controllers.LayoutController;
+import DAO.MembreDAO;
 import Models.amine.Personnel.Membre;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -21,15 +21,7 @@ public class MembersController {
     @FXML private TableColumn<Membre, Integer> colNbSeances;
     @FXML private TableColumn<Membre, String> colAbonnement;
 
-    private static final ObservableList<Membre> members = FXCollections.observableArrayList();
-
-    public static ObservableList<Membre> getMembersList() {
-        return members;
-    }
-
-    public static void addMemberToList(Membre m) {
-        members.add(m);
-    }
+    private final MembreDAO membreDAO = new MembreDAO();
 
     @FXML
     public void initialize() {
@@ -52,14 +44,12 @@ public class MembersController {
                 )
         );
 
-        if (members.isEmpty()) loadDummy();
-
-        membersTable.setItems(members);
+        loadMembersFromDB();
     }
 
-    private void loadDummy() {
-        members.add(new Membre(1, "Ahmed", "Ben Ali", "ahmed@gmail.com", "22222222"));
-        members.add(new Membre(2, "Sarra", "Kefi", "sarra@gmail.com", "90909090"));
+    private void loadMembersFromDB() {
+        ObservableList<Membre> list = membreDAO.getAllMembresObservable();
+        membersTable.setItems(list);
     }
 
     // LOAD ADD VIEW
@@ -82,7 +72,8 @@ public class MembersController {
     private void deleteMember() {
         Membre selected = membersTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            members.remove(selected);
+            membreDAO.supprimerMembre(selected.getId());
+            loadMembersFromDB();
         }
     }
 }

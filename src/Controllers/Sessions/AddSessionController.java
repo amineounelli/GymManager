@@ -1,14 +1,13 @@
 package Controllers.Sessions;
 
 import Controllers.LayoutController;
-import Controllers.Members.MembersController;
-import Controllers.Coaches.CoachesController;
+import DAO.*;
+import Models.amine.Gestion.*;
 import Models.amen.Infrastructure.*;
 import Models.amine.Personnel.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 
 import java.time.ZoneId;
 import java.util.Date;
@@ -16,99 +15,76 @@ import java.util.List;
 
 public class AddSessionController {
 
-    @FXML private ComboBox<String> typeCombo;
-    @FXML private TextField durationField;
-    @FXML private DatePicker dateField;
-    @FXML private ComboBox<Salle> salleCombo;
-    @FXML private TextField costField;
+    @FXML private ComboBox<String> cbType;
+    @FXML private TextField tfDuree;
+    @FXML private DatePicker dpDate;
+    @FXML private ComboBox<Salle> cbSalle;
+    @FXML private TextField tfCout;
 
-    @FXML private ListView<Membre> membersList;
-    @FXML private ComboBox<Coach> coachCombo;
-    @FXML private TextField capacityField;
+    @FXML private ComboBox<Membre> cbSingleMember;
+    @FXML private ComboBox<Coach> cbCoach;
+    @FXML private ListView<Membre> lvMembers;
+    @FXML private TextField tfCapacite;
 
-    @FXML private Label lblInfo;
+    @FXML private VBox panelIndividual;
+    @FXML private VBox panelCollective;
 
-    private final ObservableList<Membre> membersObs = FXCollections.observableArrayList();
-    private final ObservableList<Coach> coachesObs = FXCollections.observableArrayList();
-    private final ObservableList<Salle> sallesObs = FXCollections.observableArrayList();
+    private final MembreDAO membreDAO = new MembreDAO();
+    private final CoachDAO coachDAO = new CoachDAO();
+    private final SalleDAO salleDAO = new SalleDAO();
+    private final SeanceDAO seanceDAO = new SeanceDAO();
 
     @FXML
     public void initialize() {
-        typeCombo.setItems(FXCollections.observableArrayList("Individual", "Collective"));
-        typeCombo.getSelectionModel().selectFirst();
-        typeCombo.setOnAction(e -> typeChanged());
+        cbType.getItems().addAll("Individuelle", "Collective");
 
-        List<Membre> allMembers = MembersController.getMembersList();
-        List<Coach> allCoaches = CoachesController.getCoachesList();
+        cbSingleMember.getItems().setAll(membreDAO.getAllMembres());
+        lvMembers.getItems().setAll(membreDAO.getAllMembres());
+        cbCoach.getItems().setAll(coachDAO.getAllCoachs());
+        cbSalle.getItems().setAll(salleDAO.getAllSalles());
 
-        membersObs.setAll(allMembers);
-        membersList.setItems(membersObs);
-        membersList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        coachesObs.setAll(allCoaches);
-        coachCombo.setItems(coachesObs);
-
-        // simple sample salles
-        sallesObs.addAll(new Salle(1, "Salle A", 30), new Salle(2, "Salle B", 20));
-        salleCombo.setItems(sallesObs);
-
-        typeChanged();
-    }
-
-    private void typeChanged() {
-        String t = typeCombo.getSelectionModel().getSelectedItem();
-        boolean individual = "Individual".equalsIgnoreCase(t);
-        coachCombo.setVisible(!individual);
-        coachCombo.setDisable(individual);
-        capacityField.setVisible(!individual);
-        capacityField.setDisable(individual);
-        membersList.getSelectionModel().setSelectionMode(individual ? SelectionMode.SINGLE : SelectionMode.MULTIPLE);
+        lvMembers.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     @FXML
-    private void handleSave() {
+    private void onTypeChanged() {
+        boolean indiv = "Individuelle".equals(cbType.getValue());
+        panelIndividual.setVisible(indiv);
+        panelIndividual.setManaged(indiv);
+
+        panelCollective.setVisible(!indiv);
+        panelCollective.setManaged(!indiv);
+    }
+
+    @FXML
+    private void saveSession() {
         try {
-            String type = typeCombo.getSelectionModel().getSelectedItem();
-            double duree = Double.parseDouble(durationField.getText().trim());
-            Date date = Date.from(dateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
-            Salle selSalle = salleCombo.getSelectionModel().getSelectedItem();
-            double cout = Double.parseDouble(costField.getText().trim());
-            if (selSalle == null) { lblInfo.setText("Choose a salle."); return; }
+            double duree = Double.parseDouble(tfDuree.getText());
+            double cout = Double.parseDouble(tfCout.getText());
+            Date date = Date.from(dpDate.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+            Salle salle = cbSalle.getValue();
 
-            Seance created;
-            if ("Individual".equalsIgnoreCase(type)) {
-                Membre chosen = membersList.getSelectionModel().getSelectedItem();
-                if (chosen == null) { lblInfo.setText("Select a member."); return; }
-                created = new SeanceIndividuelle(0, duree, date, selSalle, cout, chosen);
+            if (salle == null) throw new Exception("Salle required");
+
+            if ("Individuelle".equals(cbType.getValue())) {
+                Membre m = cbSingleMember.getValue();
+                SeanceIndividuelle s = new SeanceIndividuelle(0, duree, date, salle, cout, m);
+                seanceDAO.ajouterSeanceIndividuelle(s);
+
             } else {
-                Coach chosenCoach = coachCombo.getSelectionModel().getSelectedItem();
-                if (chosenCoach == null) { lblInfo.setText("Select a coach."); return; }
-                int cap = Integer.parseInt(capacityField.getText().trim());
-                SeanceCollective sc = new SeanceCollective(0, duree, date, selSalle, cout, chosenCoach, cap);
-                for (Membre m : membersList.getSelectionModel().getSelectedItems()) {
-                    if (sc.verifierDisponibilite()) {
-                        try { sc.ajouterParticipant(m); } catch (SallePleineException ignored) {}
-                    }
-                }
-                created = sc;
+                Coach c = cbCoach.getValue();
+                int cap = Integer.parseInt(tfCapacite.getText());
+                SeanceCollective s = new SeanceCollective(0, duree, date, salle, cout, c, cap);
+                seanceDAO.ajouterSeanceCollective(s);
             }
-
-            // register in SessionsController
-            SessionsController sc = SessionsController.getInstance();
-            if (sc != null) sc.addSession(created);
 
             LayoutController.getInstance().loadView("/Views/Sessions/Sessions.fxml");
 
-        } catch (NumberFormatException nfe) {
-            lblInfo.setText("Numeric fields invalid.");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            lblInfo.setText("Error: " + ex.getMessage());
-        }
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     @FXML
-    private void handleCancel() {
+    private void cancel() {
         LayoutController.getInstance().loadView("/Views/Sessions/Sessions.fxml");
     }
 }

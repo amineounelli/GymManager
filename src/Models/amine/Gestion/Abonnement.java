@@ -36,4 +36,16 @@ public class Abonnement {
     public void desactiver() {
         etat = "Inactif";
     }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setDateDebut(Date dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public void setDateFin(Date dateFin) {
+        this.dateFin = dateFin;
+    }
 }

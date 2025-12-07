@@ -35,5 +35,9 @@ public abstract sealed class Seance permits SeanceIndividuelle, SeanceCollective
     public Salle getSalle() { return salle; }
     public List<Reservation> getListeReservations() { return listeReservations; }
     public double getCoutHoraire() { return coutHoraire; }
+
+    public void setIdSeance(int id) {
+        this.idSeance = id;
+    }
 }
 

@@ -1,13 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models.amen.Infrastructure;
-
-/**
- *
- * @author DELL
- */
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +9,7 @@ public class Salle {
     private int capaciteSalle;
     private List<Equipement> listeEquipements;
 
+    // Constructeur
     public Salle(int idSalle, String nomSalle, int capaciteSalle) {
         this.idSalle = idSalle;
         this.nomSalle = nomSalle;
@@ -25,6 +17,7 @@ public class Salle {
         this.listeEquipements = new ArrayList<>();
     }
 
+    // Méthodes d'équipement
     public void ajouterEquipement(Equipement e) {
         listeEquipements.add(e);
     }
@@ -48,9 +41,45 @@ public class Salle {
         }
     }
 
-    public int getIdSalle() { return idSalle; }
-    public String getNomSalle() { return nomSalle; }
-    public int getCapaciteSalle() { return capaciteSalle; }
-    public List<Equipement> getListeEquipements() { return listeEquipements; }
-}
+    // ==================== GETTERS ====================
+    public int getIdSalle() {
+        return idSalle;
+    }
 
+    public String getNomSalle() {
+        return nomSalle;
+    }
+
+    public int getCapaciteSalle() {
+        return capaciteSalle;
+    }
+
+    public List<Equipement> getListeEquipements() {
+        return listeEquipements;
+    }
+
+    // ==================== SETTERS (AJOUTÉS) ====================
+    // CRITIQUE: Ce setter est nécessaire pour mettre à jour l'ID après insertion en BDD
+    public void setIdSalle(int idSalle) {
+        this.idSalle = idSalle;
+    }
+
+    public void setNomSalle(String nomSalle) {
+        this.nomSalle = nomSalle;
+    }
+
+    public void setCapaciteSalle(int capaciteSalle) {
+        this.capaciteSalle = capaciteSalle;
+    }
+
+    // ==================== TOSTRING (UTILE POUR DEBUG) ====================
+    @Override
+    public String toString() {
+        return "Salle{" +
+                "idSalle=" + idSalle +
+                ", nomSalle='" + nomSalle + '\'' +
+                ", capaciteSalle=" + capaciteSalle +
+                ", nbEquipements=" + listeEquipements.size() +
+                '}';
+    }
+}

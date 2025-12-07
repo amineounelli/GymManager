@@ -1,64 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controllers.Sessions.AddSessionController"
-            style="-fx-background-color: #1e293b; -fx-padding: 20;"
-            prefWidth="900" prefHeight="700">
+            style="-fx-background-color: #1e293b;">
 
-    <VBox spacing="12" layoutX="30" layoutY="20" prefWidth="760">
+    <VBox alignment="TOP_CENTER" spacing="20"
+          layoutX="300" layoutY="40"
+          prefWidth="420"
+          style="-fx-background-color: #0f172a;
+                 -fx-padding: 30;
+                 -fx-background-radius: 14;">
 
-        <Label text="Create Session"
-               style="-fx-text-fill: white; -fx-font-size: 22px; -fx-font-weight: bold;" />
+        <Label text="Add Session"
+               style="-fx-text-fill: white; -fx-font-size: 24px; -fx-font-weight: bold;" />
 
-        <HBox spacing="12">
-            <VBox spacing="8" prefWidth="360">
-                <Label text="Type" style="-fx-text-fill: #94a3b8;" />
-                <ComboBox fx:id="typeCombo" prefWidth="340"/>
+        <!-- TYPE SELECTOR -->
+        <Label text="Session Type"
+               style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;" />
+        <ComboBox fx:id="cbType"
+                  promptText="Choose Type"
+                  onAction="#onTypeChanged"
+                  style="-fx-background-radius: 10;
+                         -fx-background-color: #1e293b;
+                         -fx-text-fill: white;" />
 
-                <Label text="Duration (hours)" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <TextField fx:id="durationField" promptText="e.g. 1.5" style="-fx-background-color:#0f172a; -fx-text-fill:white;"/>
+        <!-- COMMON FIELDS -->
+        <TextField fx:id="tfDuree" promptText="Durée (heures)"
+                   style="-fx-background-color: #1e293b; -fx-text-fill: white;
+                          -fx-padding: 10; -fx-background-radius: 8;" />
 
-                <Label text="Date" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <DatePicker fx:id="dateField" />
+        <DatePicker fx:id="dpDate"
+                    promptText="Date"
+                    style="-fx-background-radius: 8; -fx-background-color: #1e293b;
+                           -fx-text-fill: white;" />
 
-                <Label text="Salle" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <ComboBox fx:id="salleCombo" prefWidth="340"/>
+        <ComboBox fx:id="cbSalle"
+                  promptText="Salle"
+                  style="-fx-background-radius: 10;
+                         -fx-background-color: #1e293b;
+                         -fx-text-fill: white;" />
 
-                <Label text="Cost per hour (DT)" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <TextField fx:id="costField" promptText="e.g. 20" />
-            </VBox>
+        <TextField fx:id="tfCout" promptText="Cout Horaire"
+                   style="-fx-background-color: #1e293b; -fx-text-fill: white;
+                          -fx-padding: 10; -fx-background-radius: 8;" />
 
-            <VBox spacing="8" prefWidth="360">
-                <Label text="Members (select one or many)" style="-fx-text-fill: #94a3b8;" />
-                <ListView fx:id="membersList" prefHeight="230" />
+        <!-- INDIVIDUAL SESSION PANEL -->
+        <VBox fx:id="panelIndividual" spacing="10" visible="false" managed="false">
 
-                <Label text="Coach (for collective)" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <ComboBox fx:id="coachCombo" prefWidth="340"/>
+            <Label text="Choose Member"
+                   style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;" />
 
-                <Label text="Capacity (for collective)" style="-fx-text-fill: #94a3b8; margin-top:6;" />
-                <TextField fx:id="capacityField" promptText="e.g. 12" />
+            <ComboBox fx:id="cbSingleMember"
+                      promptText="Member"
+                      style="-fx-background-radius: 10;
+                             -fx-background-color: #1e293b;
+                             -fx-text-fill: white;" />
+        </VBox>
 
-            </VBox>
-        </HBox>
+        <!-- COLLECTIVE SESSION PANEL -->
+        <VBox fx:id="panelCollective" spacing="12" visible="false" managed="false">
 
-        <HBox spacing="10">
-            <Button text="Save" onAction="#handleSave"
-                    style="-fx-background-color: #059669; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius:8;"/>
-            <Button text="Cancel" onAction="#handleCancel"
-                    style="-fx-background-color: #dc2626; -fx-text-fill: white; -fx-padding: 8 16; -fx-background-radius:8;"/>
-            <Label fx:id="lblInfo" style="-fx-text-fill: #94a3b8;" />
-        </HBox>
+            <Label text="Coach"
+                   style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;" />
 
+            <ComboBox fx:id="cbCoach"
+                      promptText="Coach"
+                      style="-fx-background-radius: 10;
+                             -fx-background-color: #1e293b;
+                             -fx-text-fill: white;" />
+
+            <Label text="Participants"
+                   style="-fx-text-fill: #94a3b8; -fx-font-size: 14px;" />
+
+            <ListView fx:id="lvMembers"
+                      style="-fx-background-color: #1e293b; -fx-text-fill: white;
+                             -fx-background-radius: 8;"
+                      prefHeight="120" />
+
+            <TextField fx:id="tfCapacite"
+                       promptText="Capacité"
+                       style="-fx-background-color: #1e293b; -fx-text-fill: white;
+                              -fx-padding: 10; -fx-background-radius: 8;" />
+
+        </VBox>
+
+        <!-- ACTION BUTTONS -->
+        <Button text="Save"
+                onAction="#saveSession"
+                style="-fx-background-color: #059669; -fx-text-fill: white;
+                       -fx-padding: 10 20; -fx-background-radius: 8;" />
+
+        <Button text="Cancel"
+                onAction="#cancel"
+                style="-fx-background-color: #dc2626; -fx-text-fill: white;
+                       -fx-padding: 8 20; -fx-background-radius: 8;" />
     </VBox>
 </AnchorPane>

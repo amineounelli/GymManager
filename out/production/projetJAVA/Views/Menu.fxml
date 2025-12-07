@@ -46,6 +46,8 @@
                     <HBox spacing="10">
                         <Button text="➕ Ajouter" onAction="#handleAjouterMembre" styleClass="btn-green"/>
                         <Button text="🗑️ Supprimer" onAction="#handleSupprimerMembre" styleClass="btn-red"/>
+                        <Button text="Membres Actifs" onAction="#handleAfficherMembresActifs"/>
+                        <Button text="Afficher Membres" onAction="#handleAfficherMembres"/>
                     </HBox>
 
                     <TableView fx:id="membresTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
@@ -146,6 +148,8 @@
                         <ComboBox fx:id="etatEquipComboBox" promptText="État" prefWidth="150"/>
                         <Button text="➕ Ajouter" onAction="#handleAjouterEquipement" styleClass="btn-green"/>
                         <Button text="🗑️ Supprimer" onAction="#handleSupprimerEquipement" styleClass="btn-red"/>
+                        <Button text="Équipements Fonctionnels" onAction="#handleAfficherEquipementsFonctionnels"/>
+                        <Button text="Afficher Équipements" onAction="#handleAfficherEquipements"/>
                     </HBox>
 
                     <HBox spacing="10">
@@ -199,6 +203,7 @@
                         <ComboBox fx:id="typePaiementComboBox" promptText="Type" prefWidth="150"/>
                         <TextField fx:id="montantPaiementField" promptText="Montant (DT)" prefWidth="120"/>
                         <Button text="💳 Effectuer" onAction="#handleEffectuerPaiement" styleClass="btn-green"/>
+                        <Button text="🔄 Afficher Paiements" onAction="#handleAfficherPaiements" styleClass="btn-info"/>
                     </HBox>
 
                     <TableView fx:id="paiementsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
@@ -229,7 +234,7 @@
                     </GridPane>
 
                     <Button text="➕ Créer Séance" onAction="#handleCreerSeance" styleClass="btn-green"/>
-
+                    <Button text="Afficher Séances" onAction="#handleAfficherSeances" />
                     <TableView fx:id="seancesTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
                         <columns>
                             <TableColumn fx:id="seanceIdCol" text="ID" prefWidth="60"/>
@@ -249,6 +254,8 @@
                         <ComboBox fx:id="coachProgrammeComboBox" promptText="Coach" prefWidth="200"/>
                         <TextField fx:id="titreProgrammeField" promptText="Titre du programme" prefWidth="250"/>
                         <Button text="➕ Créer Programme" onAction="#handleCreerProgramme" styleClass="btn-green"/>
+                        <!-- 👇 AJOUTEZ CETTE LIGNE -->
+                        <Button text="🔄 Afficher Programmes" onAction="#handleAfficherProgrammes" styleClass="btn-blue"/>
                     </HBox>
 
                     <Separator/>
@@ -271,7 +278,6 @@
                     </TableView>
                 </VBox>
             </Tab>
-
             <!-- ============ TAB RÉSERVATIONS ============ -->
             <Tab text="📅 Réservations">
                 <VBox spacing="15" style="-fx-padding: 20;">

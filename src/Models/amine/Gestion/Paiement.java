@@ -43,4 +43,9 @@ public class Paiement {
                 .mapToDouble(Paiement::getMontant)
                 .sum();
     }
+
+    public void setIdPaiement(int  generatedId) {
+        this.idPaiement = generatedId;
+    }
+
 }

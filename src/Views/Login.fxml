@@ -12,7 +12,8 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="700" prefWidth="1000" style="-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<BorderPane prefHeight="700" prefWidth="1000" style="-fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);
+" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginController">
 
     <center>
         <VBox alignment="CENTER" spacing="25">

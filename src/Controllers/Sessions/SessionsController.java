@@ -1,140 +1,112 @@
 package Controllers.Sessions;
 
 import Controllers.LayoutController;
-import Controllers.Members.MembersController;
-import Controllers.Coaches.CoachesController;
+import DAO.SeanceDAO;
+import Models.amine.Gestion.*;
 import Models.amen.Infrastructure.*;
 import Models.amine.Personnel.*;
+import Utils.SessionHolder;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
-import javafx.scene.control.Label;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SessionsController {
 
     @FXML private VBox cardsContainer;
 
-    // keep an accessible instance
-    private static SessionsController instance;
-    public SessionsController() { instance = this; }
-    public static SessionsController getInstance() { return instance; }
-
-    // sessions list (in-memory)
-    private final List<Seance> sessions = new ArrayList<>();
-
-    // references to members/coaches lists from their controllers
+    private final SeanceDAO dao = new SeanceDAO();
+    private List<Seance> sessions;
     private List<Membre> membres;
     private List<Coach> coaches;
-    private final List<Salle> salles = new ArrayList<>();
+    private List<Salle> salles;
 
     @FXML
     public void initialize() {
-        // get shared lists from the other controllers (they expose static ObservableLists)
-        membres = new ArrayList<>(MembersController.getMembersList());
-        coaches = new ArrayList<>(CoachesController.getCoachesList());
-
-        // create dummy members/coaches if none exist so UI won't be empty (optional)
-        if (membres.isEmpty()) {
-            membres.add(new Membre(1, "Ahmed", "Ben Ali", "ahmed@gmail.com", "22222222"));
-            membres.add(new Membre(2, "Sarra", "Kefi", "sarra@gmail.com", "90909090"));
-        }
-        if (coaches.isEmpty()) {
-            coaches.add(new Coach(1, "Leila", "Trabelsi", "leila@gmail.com", "99999999", "Yoga", 40));
-            coaches.add(new Coach(2, "Omar", "Gharbi", "omar@gmail.com", "50505050", "Boxing", 60));
-        }
-
-        // dummy salles (you can replace by real Salle controller later)
-        salles.add(new Salle(1, "Salle A", 30));
-        salles.add(new Salle(2, "Salle B", 20));
-
-        // add a couple of sample sessions so cards are visible
-        sessions.clear();
-        sessions.add(new SeanceIndividuelle(1, 1.0, new java.util.Date(), salles.get(0), 20, membres.get(0)));
-        sessions.add(new SeanceCollective(2, 2.0, new java.util.Date(), salles.get(0), 15, coaches.get(0), 10));
-
+        loadData();
         refreshCards();
+    }
+
+    private void loadData() {
+        sessions = dao.getAllSeances();
+        membres = new DAO.MembreDAO().getAllMembres();
+        coaches = new DAO.CoachDAO().getAllCoachs();
+        salles = new DAO.SalleDAO().getAllSalles();
     }
 
     private void refreshCards() {
-        if (cardsContainer == null) return;
         cardsContainer.getChildren().clear();
-        for (Seance s : sessions) cardsContainer.getChildren().add(createSessionCard(s));
+        for (Seance s : sessions)
+            cardsContainer.getChildren().add(makeCard(s));
     }
 
-    private HBox createSessionCard(Seance s) {
+    private HBox makeCard(Seance s) {
+
         HBox card = new HBox();
-        card.setSpacing(12);
-        card.setStyle("-fx-background-color: #0f172a; -fx-background-radius: 12; -fx-padding: 12;");
+        card.setSpacing(20);
+        card.setStyle("""
+            -fx-background-color:#0f172a;
+            -fx-background-radius:14;
+            -fx-padding:20;
+            -fx-border-color:#1e293b;
+            -fx-border-radius:14;
+        """);
 
         VBox info = new VBox(6);
-        Label lblType = new Label((s instanceof SeanceIndividuelle) ? "Individual Session" : "Collective Session");
-        lblType.setStyle("-fx-text-fill: #3b82f6; -fx-font-weight: bold; -fx-font-size: 14px;");
-        Label lblDate = new Label("Date: " + s.getDate());
-        lblDate.setStyle("-fx-text-fill: white;");
-        Label lblSalle = new Label("Salle: " + (s.getSalle() != null ? s.getSalle().getNomSalle() : "—"));
-        lblSalle.setStyle("-fx-text-fill: #94a3b8;");
-        info.getChildren().addAll(lblType, lblDate, lblSalle);
+        boolean isInd = s instanceof SeanceIndividuelle;
 
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
+        Label type = new Label(isInd ? "Individual Session" : "Collective Session");
+        type.setStyle("-fx-text-fill:#3b82f6; -fx-font-size:18px; -fx-font-weight:bold;");
 
-        VBox actions = new VBox(8);
-        Button btnEdit = new Button("Edit");
-        btnEdit.setStyle("-fx-background-color: #0ea5e9; -fx-text-fill: white; -fx-background-radius: 6;");
-        btnEdit.setOnAction(e -> openEditSession(s));
+        Label date = new Label("Date: " + s.getDate());
+        date.setStyle("-fx-text-fill:white;");
 
-        Button btnDelete = new Button("Delete");
-        btnDelete.setStyle("-fx-background-color: #dc2626; -fx-text-fill: white; -fx-background-radius: 6;");
-        btnDelete.setOnAction(e -> { sessions.remove(s); refreshCards(); });
+        Label salle = new Label("Salle: " + s.getSalle().getNomSalle());
+        salle.setStyle("-fx-text-fill:#94a3b8;");
 
-        actions.getChildren().addAll(btnEdit, btnDelete);
+        info.getChildren().addAll(type, date, salle);
 
-        card.getChildren().addAll(info, spacer, actions);
+        if (isInd) {
+            SeanceIndividuelle si = (SeanceIndividuelle) s;
+            Label m = new Label("Member: " + si.getMembre().getNom());
+            m.setStyle("-fx-text-fill:#22c55e;");
+            info.getChildren().add(m);
+        } else {
+            SeanceCollective sc = (SeanceCollective) s;
+            Label c = new Label("Coach: " + sc.getCoach().getNom());
+            c.setStyle("-fx-text-fill:#22c55e;");
+            info.getChildren().add(c);
+        }
+
+        // ACTIONS
+        Button edit = new Button("Edit");
+        edit.setStyle("-fx-background-color:#0ea5e9; -fx-text-fill:white;");
+        edit.setOnAction(e -> {
+            SessionHolder.set(s);
+            LayoutController.getInstance().loadView("/Views/Sessions/EditSession.fxml");
+        });
+
+        Button delete = new Button("Delete");
+        delete.setStyle("-fx-background-color:#dc2626; -fx-text-fill:white;");
+        delete.setOnAction(e -> {
+            dao.supprimerSeance(s.getIdSeance());
+            loadData();
+            refreshCards();
+        });
+
+        VBox actions = new VBox(10, edit, delete);
+        card.getChildren().addAll(info, actions);
+
         return card;
     }
 
-    // Called by AddSessionController when saving
-    public void addSession(Seance s) {
-        // set id
-        s.idSeance = generateNewId();
-        sessions.add(s);
-        refreshCards();
-    }
-
-    // Called by EditSessionController when updating
-    public void updateSession(Seance oldS, Seance updated) {
-        int idx = sessions.indexOf(oldS);
-        if (idx != -1) {
-            sessions.set(idx, updated);
-            refreshCards();
-        }
-    }
-
-    private int generateNewId() {
-        return sessions.stream().mapToInt(Seance::getIdSeance).max().orElse(0) + 1;
-    }
-
-    // load Add view (non-popup)
     @FXML
-    private void handleAddSession() {
-        // ensure Add controller can read the real members/coaches via static access
+    private void openAdd() {
         LayoutController.getInstance().loadView("/Views/Sessions/AddSession.fxml");
     }
-
-    // prepare editing session and open edit view
-    private static Seance editing;
-    private void openEditSession(Seance s) {
-        editing = s;
-        // EditSessionController will get editing session via SessionsController.getEditingSession()
-        LayoutController.getInstance().loadView("/Views/Sessions/EditSession.fxml");
-    }
-
-    // helper for EditSessionController
-    public static Seance getEditingSession() { return editing; }
 }

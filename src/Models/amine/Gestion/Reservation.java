@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Models.amine.Gestion;
 
 import java.util.Date;
@@ -47,6 +43,22 @@ public class Reservation {
     } else {
         System.out.println("Impossible d'annuler : membre ou séance manquant.");
     }    }
+
+    public void setIdReservation(int idReservation) {
+        this.idReservation = idReservation;
+    }
+
+    public void setMembre(Membre membre) {
+        this.membre = membre;
+    }
+
+    public void setSeance(Seance seance) {
+        this.seance = seance;
+    }
+
+    public void setDateReservation(Date dateReservation) {
+        this.dateReservation = dateReservation;
+    }
 
     public void afficherDetailsReservation() {
         System.out.println("Reservation #" + idReservation + " | Membre: " + membre.getNom() +

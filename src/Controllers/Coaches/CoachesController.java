@@ -1,8 +1,8 @@
 package Controllers.Coaches;
 
 import Controllers.LayoutController;
+import DAO.CoachDAO;
 import Models.amine.Personnel.Coach;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -22,15 +22,7 @@ public class CoachesController {
     @FXML private TableColumn<Coach, Integer> colNbSeances;
     @FXML private TableColumn<Coach, Double> colRevenu;
 
-    private static final ObservableList<Coach> coaches = FXCollections.observableArrayList();
-
-    public static ObservableList<Coach> getCoachesList() {
-        return coaches;
-    }
-
-    public static void addCoachToList(Coach c) {
-        coaches.add(c);
-    }
+    private final CoachDAO coachDAO = new CoachDAO();
 
     @FXML
     public void initialize() {
@@ -55,23 +47,19 @@ public class CoachesController {
                 ).asObject()
         );
 
-        if (coaches.isEmpty()) loadDummy();
-
-        coachesTable.setItems(coaches);
+        loadCoachesFromDB();
     }
 
-    private void loadDummy() {
-        coaches.add(new Coach(1, "Leila", "Trabelsi", "leila@gmail.com", "99999999", "Yoga", 40));
-        coaches.add(new Coach(2, "Omar", "Gharbi", "omar@gmail.com", "50505050", "Boxing", 60));
+    private void loadCoachesFromDB() {
+        ObservableList<Coach> list = coachDAO.getAllCoachsObservable();
+        coachesTable.setItems(list);
     }
 
-    // LOAD ADD VIEW
     @FXML
     private void addCoach() {
         LayoutController.getInstance().loadView("/Views/Coaches/AddCoach.fxml");
     }
 
-    // LOAD EDIT VIEW
     @FXML
     private void editCoach() {
         Coach selected = coachesTable.getSelectionModel().getSelectedItem();
@@ -85,7 +73,8 @@ public class CoachesController {
     private void deleteCoach() {
         Coach selected = coachesTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            coaches.remove(selected);
+            coachDAO.supprimerCoach(selected.getId());
+            loadCoachesFromDB();
         }
     }
 }

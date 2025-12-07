@@ -1,6 +1,7 @@
 package Controllers.Coaches;
 
 import Controllers.LayoutController;
+import DAO.CoachDAO;
 import Models.amine.Personnel.Coach;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -12,6 +13,8 @@ public class EditCoachController {
     public static void setCoach(Coach c) {
         coachToEdit = c;
     }
+
+    private final CoachDAO coachDAO = new CoachDAO();
 
     @FXML private TextField tfNom;
     @FXML private TextField tfPrenom;
@@ -34,12 +37,15 @@ public class EditCoachController {
 
     @FXML
     public void updateCoach() {
+
         coachToEdit.setNom(tfNom.getText());
         coachToEdit.setPrenom(tfPrenom.getText());
         coachToEdit.setEmail(tfEmail.getText());
         coachToEdit.setTelephone(tfPhone.getText());
         coachToEdit.setSpecialite(tfSpecialite.getText());
         coachToEdit.setTarifHeure(Double.parseDouble(tfTarif.getText()));
+
+        coachDAO.modifierCoach(coachToEdit);
 
         LayoutController.getInstance().loadView("/Views/Coaches/Coaches.fxml");
     }

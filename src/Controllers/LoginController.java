@@ -1,4 +1,4 @@
-package controllers;
+package Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -33,10 +33,17 @@ public class LoginController {
         }
 
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Views/Layout.fxml"));
+            // LOAD MAIN LAYOUT FIRST
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Views/Layout.fxml"));
+            Parent root = loader.load();
+
+            // SWITCH SCENE
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
+
+            //AUTO LOAD DASHBOARD
+            LayoutController.getInstance().loadView("/Views/Dashboard.fxml");
 
         } catch (Exception e) {
             e.printStackTrace();

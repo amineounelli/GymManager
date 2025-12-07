@@ -1,34 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.Color?>
 
 <BorderPane xmlns="http://javafx.com/javafx/25"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="Controllers.LayoutController"
             prefHeight="700" prefWidth="1100"
-            stylesheets="@styles/global.css">
+            stylesheets="@Styles/sidebar.css">
 
-    <!-- SIDEBAR -->
     <left>
         <fx:include source="Sidebar.fxml" fx:id="sidebar"/>
     </left>
 
-    <!-- MAIN AREA WITH POPUP OVERLAY -->
     <center>
-
         <StackPane fx:id="rootStack">
 
-            <!-- Main Content -->
             <AnchorPane fx:id="contentArea"
                         style="-fx-background-color: #1e293b;" />
 
-            <!-- Overlay Background -->
             <AnchorPane fx:id="overlayPane"
                         visible="false"
                         style="-fx-background-color: rgba(0,0,0,0.55);">
 
-                <!-- Popup Container -->
                 <VBox fx:id="popupContainer"
                       alignment="CENTER"
                       prefWidth="600"
@@ -40,7 +33,6 @@
             </AnchorPane>
 
         </StackPane>
-
     </center>
 
 </BorderPane>

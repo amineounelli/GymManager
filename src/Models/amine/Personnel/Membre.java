@@ -19,6 +19,7 @@ public final class Membre extends Personne {
         super(id, nom, prenom, email, telephone);
         this.listeSeances = new ArrayList<>();
         this.listeReservations = new ArrayList<>();
+        this.listePaiements = new ArrayList<>();
     }
 
     public Abonnement getAbonnement() { return abonnement; }

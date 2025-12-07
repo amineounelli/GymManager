@@ -2,20 +2,21 @@ package Controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
 
 public class LayoutController {
 
-    @FXML private AnchorPane contentArea;
+    private static LayoutController instance;
 
+    @FXML private AnchorPane contentArea;
+    @FXML public StackPane rootStack;
     @FXML private AnchorPane overlayPane;
     @FXML private VBox popupContainer;
-
-    private static LayoutController instance;
 
     public LayoutController() {
         instance = this;
@@ -25,46 +26,47 @@ public class LayoutController {
         return instance;
     }
 
-    // UNIVERSAL VIEW LOADER
-    public void loadView(String fxmlResourcePath) {
+    // ===============================
+    // LOAD NORMAL VIEWS
+    // ===============================
+    public void loadView(String path) {
         try {
-            Parent view = FXMLLoader.load(getClass().getResource(fxmlResourcePath));
-
-            // anchor if possible (only if it's an AnchorPane)
-            if (view instanceof AnchorPane ap) {
-                AnchorPane.setTopAnchor(ap, 0.0);
-                AnchorPane.setBottomAnchor(ap, 0.0);
-                AnchorPane.setLeftAnchor(ap, 0.0);
-                AnchorPane.setRightAnchor(ap, 0.0);
-            }
+            Node view = FXMLLoader.load(getClass().getResource(path));
 
             contentArea.getChildren().setAll(view);
+
+            AnchorPane.setTopAnchor(view, 0.0);
+            AnchorPane.setBottomAnchor(view, 0.0);
+            AnchorPane.setLeftAnchor(view, 0.0);
+            AnchorPane.setRightAnchor(view, 0.0);
+
         } catch (IOException e) {
-            System.err.println("FAILED TO LOAD: " + fxmlResourcePath);
             e.printStackTrace();
         }
     }
 
-    // POPUP SYSTEM
-    public void showPopup(String fxmlPath) {
-        try {
-            Parent popup = FXMLLoader.load(getClass().getResource(fxmlPath));
-            popupContainer.getChildren().setAll(popup);
-            overlayPane.setVisible(true);
-        } catch (IOException e) {
-            System.err.println("FAILED TO LOAD POPUP: " + fxmlPath);
-            e.printStackTrace();
-        }
+    // ===============================
+    // SHOW POPUP WINDOW (OVERLAY)
+    // ===============================
+    public void showPopup(Node popupContent) {
+        popupContainer.getChildren().setAll(popupContent);
+        overlayPane.setVisible(true);
     }
 
+    // ===============================
+    // CLOSE POPUP
+    // ===============================
     public void closePopup() {
         overlayPane.setVisible(false);
         popupContainer.getChildren().clear();
     }
+    
+    public void setContent(Node view) {
+    contentArea.getChildren().setAll(view);
+    AnchorPane.setTopAnchor(view, 0.0);
+    AnchorPane.setBottomAnchor(view, 0.0);
+    AnchorPane.setLeftAnchor(view, 0.0);
+    AnchorPane.setRightAnchor(view, 0.0);
+}
 
-    @FXML
-    public void initialize() {
-        overlayPane.setVisible(false);
-        loadView("/Views/Dashboard.fxml");
-    }
 }
