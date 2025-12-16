@@ -231,31 +231,26 @@ public class MenuController {
 
     private void loadAllDataFromDatabase() {
         try {
-            // Load Membres
             System.out.println("📥 Chargement des membres...");
             List<Membre> membresList = membreDAO.getAllMembres();
             membres = FXCollections.observableArrayList(membresList);
             System.out.println("✅ " + membres.size() + " membres chargés");
 
-            // Load Coachs
             System.out.println("📥 Chargement des coachs...");
             List<Coach> coachsList = coachDAO.getAllCoachs();
             coachs = FXCollections.observableArrayList(coachsList);
             System.out.println("✅ " + coachs.size() + " coachs chargés");
 
-            // Load Managers
             System.out.println("📥 Chargement des managers...");
             List<Manager> managersList = managerDAO.getAllManagers();
             managers = FXCollections.observableArrayList(managersList);
             System.out.println("✅ " + managers.size() + " managers chargés");
 
-            // Load Salles
             System.out.println("📥 Chargement des salles...");
             List<Salle> sallesList = salleDAO.getAllSalles();
             salles = FXCollections.observableArrayList(sallesList);
             System.out.println("✅ " + salles.size() + " salles chargées");
 
-            // Load Equipements
             System.out.println("📥 Chargement des équipements...");
             List<Equipement> equipementsList = equipementDAO.getAllEquipements();
             equipements = FXCollections.observableArrayList(equipementsList);
@@ -267,7 +262,6 @@ public class MenuController {
             paiements.addAll(paiementsList);      // On remplit avec les nouveaux
             System.out.println("Paiements chargés : " + paiements.size());
 
-            // Debug : Afficher les détails
             for (Paiement p : paiements) {
                 System.out.println("   📄 Paiement ID:" + p.getIdPaiement() +
                         " - Montant:" + p.getMontant() +
@@ -278,19 +272,14 @@ public class MenuController {
             seances.setAll(new SeanceDAO().getAllSeances());
             System.out.println(seances.size() + " séances chargées depuis la base");
 
-            // Load Abonnements
             System.out.println("📥 Chargement des abonnements...");
             abonnements = abonnementDAO.getAllAbonnements();
             System.out.println("✅ " + abonnements.size() + " abonnements chargés");
-
-            // Après le chargement des séances ou des paiements, ajoute ÇA :
-            // ... tout ton code existant (membres, coachs, salles, paiements, séances...)
 
             System.out.println("Chargement des programmes d'entraînement...");
             programmes.setAll(programmeDAO.getAllProgrammes());
             System.out.println("Programmes chargés : " + programmes.size());
 
-            // Load Reservations
             System.out.println("📥 Chargement des réservations...");
             List<Reservation> reservationsList = reservationDAO.getAllReservations();
             reservations.clear();
@@ -310,42 +299,36 @@ public class MenuController {
         try {
             System.out.println("🖥️ Affichage des données dans les tableaux...");
 
-            // Afficher les membres
             if (membresTable != null && membres != null) {
                 membresTable.setItems(membres);
                 membresTable.refresh();
                 System.out.println("✅ Tableau membres mis à jour (" + membres.size() + " entrées)");
             }
 
-            // Afficher les coachs
             if (coachsTable != null && coachs != null) {
                 coachsTable.setItems(coachs);
                 coachsTable.refresh();
                 System.out.println("✅ Tableau coachs mis à jour (" + coachs.size() + " entrées)");
             }
 
-            // Afficher les managers
             if (managersTable != null && managers != null) {
                 managersTable.setItems(managers);
                 managersTable.refresh();
                 System.out.println("✅ Tableau managers mis à jour (" + managers.size() + " entrées)");
             }
 
-            // Afficher les salles
             if (sallesTable != null && salles != null) {
                 sallesTable.setItems(salles);
                 sallesTable.refresh();
                 System.out.println("✅ Tableau salles mis à jour (" + salles.size() + " entrées)");
             }
 
-            // Afficher les équipements
             if (equipementsTable != null && equipements != null) {
                 equipementsTable.setItems(equipements);
                 equipementsTable.refresh();
                 System.out.println("✅ Tableau équipements mis à jour (" + equipements.size() + " entrées)");
             }
 
-            // Dans afficherToutesLesDonnees()
             if (seancesTable != null && seances != null) {
                 System.out.println("📊 Affichage des séances...");
                 seancesTable.setItems(seances);
@@ -360,7 +343,6 @@ public class MenuController {
                 System.out.println("✅ Tableau paiements mis à jour (" + paiements.size() + " entrées)");
             }
 
-            // Afficher les programmes
             if (programmesTable != null && programmes != null) {
                 System.out.println("\n📊 === AFFICHAGE PROGRAMMES ===");
                 System.out.println("Nombre de programmes: " + programmes.size());
@@ -377,11 +359,9 @@ public class MenuController {
             }
 
 
-            // Afficher les abonnements
             rafraichirTableauAbonnements();
             System.out.println("✅ Tableau abonnements mis à jour (" + abonnements.size() + " entrées)");
 
-            // Calculer et afficher les statistiques
             calculerStatistiques();
             System.out.println("✅ Statistiques calculées");
 
@@ -459,11 +439,9 @@ public class MenuController {
     }
 
     private void initializePaiementsTab() {
-        // Initialize ComboBox
         typePaiementComboBox.setItems(FXCollections.observableArrayList(
                 "Espèces", "Carte bancaire", "Virement"));
 
-        // Initialize Table Columns
         paiementIdCol.setCellValueFactory(new PropertyValueFactory<>("idPaiement"));
         paiementMembreCol.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getMembre().getNom() + " " +
@@ -471,7 +449,6 @@ public class MenuController {
         paiementTypeCol.setCellValueFactory(new PropertyValueFactory<>("typePaiement"));
         paiementMontantCol.setCellValueFactory(new PropertyValueFactory<>("montant"));
 
-        // ⚠️ LIGNE IMPORTANTE : Lier la liste observable à la table ⚠️
         paiementsTable.setItems(paiements);
     }
 
@@ -501,13 +478,11 @@ public class MenuController {
 
         System.out.println("✅ programmesTable existe");
 
-        // Configurer les colonnes
         progIdCol.setCellValueFactory(new PropertyValueFactory<>("idProgramme"));
         progTitreCol.setCellValueFactory(new PropertyValueFactory<>("titre"));
 
         System.out.println("✅ Colonnes configurées");
 
-        // Lier la table
         programmesTable.setItems(programmes);
 
         System.out.println("✅ Table liée (taille actuelle: " + programmes.size() + ")");
@@ -520,7 +495,6 @@ public class MenuController {
     }
 
     private void initializeStatistiquesTab() {
-        // Les statistiques seront calculées dynamiquement
     }
 
     // ==================== MEMBRES ====================
@@ -528,7 +502,6 @@ public class MenuController {
     @FXML
     private void handleAjouterMembre() {
         try {
-            // Validate input
             String nom = membreNomField.getText().trim();
             String prenom = membrePrenomField.getText().trim();
             String email = membreEmailField.getText().trim();
@@ -539,13 +512,9 @@ public class MenuController {
                 return;
             }
 
-            // Create new membre (ID will be set by database)
             Membre membre = new Membre(0, nom, prenom, email, tel);
 
-            // OLD: membres.add(membre);
-            // NEW: Save to database first, then add to list
             if (membreDAO.ajouterMembre(membre)) {
-                // Reload all membres to get updated list with correct IDs
                 membres.setAll(membreDAO.getAllMembres());
                 membresTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
                 showMessage("✅ Membre ajouté avec succès! ID: " + membre.getId());
@@ -569,7 +538,6 @@ public class MenuController {
             return;
         }
 
-        // Confirmation dialog
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Supprimer le membre");
@@ -631,8 +599,6 @@ public class MenuController {
             double tarif = Double.parseDouble(tarifStr);
             Coach coach = new Coach(0, nom, prenom, email, tel, specialite, tarif);
 
-            // OLD: coachs.add(coach);
-            // NEW: Save to database
             if (coachDAO.ajouterCoach(coach)) {
                 coachs.setAll(coachDAO.getAllCoachs());
                 coachsTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
@@ -659,8 +625,6 @@ public class MenuController {
             return;
         }
 
-        // OLD: coachs.remove(selected);
-        // NEW: Delete from database
         if (coachDAO.supprimerCoach(selected.getId())) {
             coachs.remove(selected);
             showMessage("✅ Coach supprimé de la base de données");
@@ -690,8 +654,6 @@ public class MenuController {
 
             Manager manager = new Manager(0, nom, prenom, email, tel, login, password);
 
-            // OLD: managers.add(manager);
-            // NEW: Save to database
             if (managerDAO.ajouterManager(manager)) {
                 managers.setAll(managerDAO.getAllManagers());
                 managersTable.refresh();  // <-- AJOUTEZ CETTE LIGNE
@@ -715,8 +677,6 @@ public class MenuController {
             return;
         }
 
-        // OLD: managers.remove(selected);
-        // NEW: Delete from database
         if (managerDAO.supprimerManager(selected.getId())) {
             managers.remove(selected);
             showMessage("✅ Manager supprimé de la base de données");
@@ -735,7 +695,6 @@ public class MenuController {
             String nom = nomSalleField.getText().trim();
             String capaciteStr = capaciteSalleField.getText().trim();
 
-            // Validation
             if (nom.isEmpty() || capaciteStr.isEmpty()) {
                 showMessage("❌ Veuillez remplir tous les champs");
                 System.err.println("❌ Champs vides");
@@ -745,10 +704,8 @@ public class MenuController {
             int capacite = Integer.parseInt(capaciteStr);
             System.out.println("📝 Création salle: " + nom + " (capacité: " + capacite + ")");
 
-            // Créer l'objet Salle avec ID 0 (sera mis à jour par la BDD)
             Salle salle = new Salle(0, nom, capacite);
 
-            // Tenter l'ajout en base de données
             System.out.println("💾 Tentative d'ajout en BDD...");
             boolean ajoutReussi = salleDAO.ajouterSalle(salle);
 
@@ -771,11 +728,9 @@ public class MenuController {
 
                 showMessage("✅ Salle créée avec succès! ID: " + salle.getIdSalle());
 
-                // Nettoyer les champs
                 nomSalleField.clear();
                 capaciteSalleField.clear();
 
-                // Rafraîchir les ComboBox
                 rafraichirComboBoxes();
 
             } else {
@@ -871,8 +826,6 @@ public class MenuController {
             return;
         }
 
-        // OLD: equipements.remove(selected);
-        // NEW: Delete from database
         if (equipementDAO.supprimerEquipement(selected.idEquipement())) {
             equipements.remove(selected);
             showMessage("✅ Équipement supprimé de la base de données");

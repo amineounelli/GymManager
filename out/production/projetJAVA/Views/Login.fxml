@@ -1,19 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Contollers.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="Contollers.LoginController"
+            stylesheets="@Login.css">
+
     <children>
-        <VBox alignment="CENTER" spacing="10.0" layoutX="100.0" layoutY="80.0" prefWidth="300" prefHeight="200">
-            <Label text="Login" style="-fx-font-size: 24;" />
-            <TextField fx:id="usernameField" promptText="Username" />
-            <PasswordField fx:id="passwordField" promptText="Password" />
-            <Button text="Login" onAction="#handleLogin" />
-            <Label fx:id="messageLabel" textFill="red" />
+        <VBox alignment="CENTER"
+              spacing="15"
+              prefWidth="300"
+              prefHeight="240"
+              styleClass="login-card"
+              AnchorPane.leftAnchor="0"
+              AnchorPane.rightAnchor="0"
+              AnchorPane.topAnchor="0"
+              AnchorPane.bottomAnchor="0">
+
+            <Label text="Login" styleClass="login-title"/>
+            <TextField fx:id="usernameField" promptText="Username"/>
+            <PasswordField fx:id="passwordField" promptText="Password"/>
+            <Button text="Login" onAction="#handleLogin"/>
+            <Label fx:id="messageLabel" styleClass="message-label"/>
         </VBox>
     </children>
 </AnchorPane>

@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="Contollers.MenuController"
-            prefHeight="700.0" prefWidth="1000.0"
-            stylesheets="@menu.css">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" stylesheets="@menu.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Contollers.MenuController">
 
     <!-- ============ TOP SECTION ============ -->
     <top>
         <VBox>
             <MenuBar styleClass="menu-bar">
                 <Menu text="Fichier">
-                    <MenuItem text="Déconnexion" onAction="#handleLogout"/>
-                    <MenuItem text="Quitter"/>
+                    <MenuItem onAction="#handleLogout" text="Déconnexion" />
+                    <MenuItem text="Quitter" />
                 </Menu>
             </MenuBar>
 
             <HBox styleClass="top-bar">
-                <Label text="🏋️ SYSTÈME DE GESTION DE SALLE DE GYM"
-                       styleClass="header-title"/>
+                <Label styleClass="header-title" text="🏋SYSTÈME DE GESTION DE SALLE DE GYM" />
             </HBox>
         </VBox>
     </top>
 
     <!-- ============ CENTER : ALL TABS ============ -->
     <center>
-        <TabPane fx:id="mainTabPane" tabClosingPolicy="UNAVAILABLE" styleClass="tab-pane">
+        <TabPane fx:id="mainTabPane" styleClass="tab-pane" tabClosingPolicy="UNAVAILABLE">
 
             <!-- ============ TAB MEMBRES ============ -->
             <Tab text="👥 Membres">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Membres" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Membres" />
 
                     <GridPane hgap="10" vgap="10">
-                        <TextField fx:id="membreNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="membrePrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <TextField fx:id="membreEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextField fx:id="membreTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <TextField fx:id="membreNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="membrePrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="membreEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="membreTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
                     </GridPane>
 
                     <HBox spacing="10">
-                        <Button text="➕ Ajouter" onAction="#handleAjouterMembre" styleClass="btn-green"/>
-                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerMembre" styleClass="btn-red"/>
-                        <Button text="Membres Actifs" onAction="#handleAfficherMembresActifs"/>
-                        <Button text="Afficher Membres" onAction="#handleAfficherMembres"/>
+                        <Button onAction="#handleAjouterMembre" styleClass="btn-green" text="➕ Ajouter" />
+                        <Button onAction="#handleSupprimerMembre" styleClass="btn-red" text="🗑 Supprimer" />
+                        <Button onAction="#handleAfficherMembresActifs" text="Membres Actifs" />
+                        <Button onAction="#handleAfficherMembres" text="Afficher Membres" />
                     </HBox>
 
-                    <TableView fx:id="membresTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="membresTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="membreIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="membreNomCol" text="Nom Complet" prefWidth="250"/>
-                            <TableColumn fx:id="membreEmailCol" text="Email" prefWidth="250"/>
+                            <TableColumn fx:id="membreIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="membreNomCol" prefWidth="250" text="Nom Complet" />
+                            <TableColumn fx:id="membreEmailCol" prefWidth="250" text="Email" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -63,26 +83,35 @@
             <!-- ============ TAB COACHS ============ -->
             <Tab text="🏃 Coachs">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Coachs" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Coachs" />
 
                     <GridPane hgap="10" vgap="10">
-                        <TextField fx:id="coachNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="coachPrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <TextField fx:id="coachEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextField fx:id="coachTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <TextField fx:id="coachSpecialiteField" promptText="Spécialité" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <TextField fx:id="coachTarifField" promptText="Tarif horaire" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <TextField fx:id="coachNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="coachPrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="coachEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="coachTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="coachSpecialiteField" promptText="Spécialité" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <TextField fx:id="coachTarifField" promptText="Tarif horaire" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
                     </GridPane>
 
                     <HBox spacing="10">
-                        <Button text="➕ Ajouter" onAction="#handleAjouterCoach" styleClass="btn-green"/>
-                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerCoach" styleClass="btn-red"/>
+                        <Button onAction="#handleAjouterCoach" styleClass="btn-green" text="➕ Ajouter" />
+                        <Button onAction="#handleSupprimerCoach" styleClass="btn-red" text="🗑 Supprimer" />
                     </HBox>
 
-                    <TableView fx:id="coachsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="coachsTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="coachIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="coachNomCol" text="Nom Complet" prefWidth="400"/>
+                            <TableColumn fx:id="coachIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="coachNomCol" prefWidth="400" text="Nom Complet" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -91,26 +120,35 @@
             <!-- ============ TAB MANAGERS ============ -->
             <Tab text="💼 Managers">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Managers" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Managers" />
 
                     <GridPane hgap="10" vgap="10">
-                        <TextField fx:id="managerNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="managerPrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <TextField fx:id="managerEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextField fx:id="managerTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <TextField fx:id="managerLoginField" promptText="Login" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <PasswordField fx:id="managerPasswordField" promptText="Mot de passe" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                        <TextField fx:id="managerNomField" promptText="Nom" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="managerPrenomField" promptText="Prénom" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="managerEmailField" promptText="Email" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="managerTelField" promptText="Téléphone" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="managerLoginField" promptText="Login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <PasswordField fx:id="managerPasswordField" promptText="Mot de passe" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
                     </GridPane>
 
                     <HBox spacing="10">
-                        <Button text="➕ Ajouter" onAction="#handleAjouterManager" styleClass="btn-green"/>
-                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerManager" styleClass="btn-red"/>
+                        <Button onAction="#handleAjouterManager" styleClass="btn-green" text="➕ Ajouter" />
+                        <Button onAction="#handleSupprimerManager" styleClass="btn-red" text="🗑 Supprimer" />
                     </HBox>
 
-                    <TableView fx:id="managersTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="managersTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="managerIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="managerNomCol" text="Nom Complet" prefWidth="400"/>
+                            <TableColumn fx:id="managerIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="managerNomCol" prefWidth="400" text="Nom Complet" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -119,20 +157,20 @@
             <!-- ============ TAB SALLES ============ -->
             <Tab text="🏢 Salles">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Salles" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Salles" />
 
                     <HBox spacing="10">
-                        <TextField fx:id="nomSalleField" promptText="Nom de la salle" prefWidth="200"/>
-                        <TextField fx:id="capaciteSalleField" promptText="Capacité" prefWidth="100"/>
-                        <Button text="➕ Créer" onAction="#handleCreerSalle" styleClass="btn-green"/>
-                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerSalle" styleClass="btn-red"/>
+                        <TextField fx:id="nomSalleField" prefWidth="200" promptText="Nom de la salle" />
+                        <TextField fx:id="capaciteSalleField" prefWidth="100" promptText="Capacité" />
+                        <Button onAction="#handleCreerSalle" styleClass="btn-green" text="➕ Créer" />
+                        <Button onAction="#handleSupprimerSalle" styleClass="btn-red" text="🗑 Supprimer" />
                     </HBox>
 
-                    <TableView fx:id="sallesTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="sallesTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="salleIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="salleNomCol" text="Nom" prefWidth="300"/>
-                            <TableColumn fx:id="salleCapaciteCol" text="Capacité" prefWidth="150"/>
+                            <TableColumn fx:id="salleIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="salleNomCol" prefWidth="300" text="Nom" />
+                            <TableColumn fx:id="salleCapaciteCol" prefWidth="150" text="Capacité" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -141,28 +179,28 @@
             <!-- ============ TAB ÉQUIPEMENTS ============ -->
             <Tab text="🔧 Équipements">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Équipements" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Équipements" />
 
                     <HBox spacing="10">
-                        <TextField fx:id="nomEquipField" promptText="Nom équipement" prefWidth="200"/>
-                        <ComboBox fx:id="etatEquipComboBox" promptText="État" prefWidth="150"/>
-                        <Button text="➕ Ajouter" onAction="#handleAjouterEquipement" styleClass="btn-green"/>
-                        <Button text="🗑️ Supprimer" onAction="#handleSupprimerEquipement" styleClass="btn-red"/>
-                        <Button text="Équipements Fonctionnels" onAction="#handleAfficherEquipementsFonctionnels"/>
-                        <Button text="Afficher Équipements" onAction="#handleAfficherEquipements"/>
+                        <TextField fx:id="nomEquipField" prefWidth="200" promptText="Nom équipement" />
+                        <ComboBox fx:id="etatEquipComboBox" prefWidth="150" promptText="État" />
+                        <Button onAction="#handleAjouterEquipement" styleClass="btn-green" text="➕ Ajouter" />
+                        <Button onAction="#handleSupprimerEquipement" styleClass="btn-red" text="🗑 Supprimer" />
+                        <Button onAction="#handleAfficherEquipementsFonctionnels" text="Équipements Fonctionnels" />
+                        <Button onAction="#handleAfficherEquipements" text="Afficher Équipements" />
                     </HBox>
 
                     <HBox spacing="10">
-                        <Label text="Affecter à une salle:"/>
-                        <ComboBox fx:id="equipSalleComboBox" promptText="Sélectionner salle" prefWidth="150"/>
-                        <Button text="✓ Affecter" onAction="#handleAffecterEquipementSalle" styleClass="btn-blue"/>
+                        <Label text="Affecter à une salle:" />
+                        <ComboBox fx:id="equipSalleComboBox" prefWidth="150" promptText="Sélectionner salle" />
+                        <Button onAction="#handleAffecterEquipementSalle" styleClass="btn-blue" text="✓ Affecter" />
                     </HBox>
 
-                    <TableView fx:id="equipementsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="equipementsTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="equipIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="equipNomCol" text="Nom" prefWidth="250"/>
-                            <TableColumn fx:id="equipEtatCol" text="État" prefWidth="150"/>
+                            <TableColumn fx:id="equipIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="equipNomCol" prefWidth="250" text="Nom" />
+                            <TableColumn fx:id="equipEtatCol" prefWidth="150" text="État" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -171,23 +209,23 @@
             <!-- ============ TAB ABONNEMENTS ============ -->
             <Tab text="💳 Abonnements">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Abonnements" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Abonnements" />
 
                     <HBox spacing="10">
-                        <ComboBox fx:id="membreAbonnementComboBox" promptText="Membre" prefWidth="200"/>
-                        <ComboBox fx:id="typeAbonnementComboBox" promptText="Type" prefWidth="200"/>
-                        <Label fx:id="prixAbonnementLabel" text="Prix: --" styleClass="section-subtitle"/>
-                        <Button text="➕ Créer" onAction="#handleCreerAbonnement" styleClass="btn-green"/>
-                        <Button text="📋 Afficher" onAction="#handleAfficherAbonnements" styleClass="btn-blue"/>
+                        <ComboBox fx:id="membreAbonnementComboBox" prefWidth="200" promptText="Membre" />
+                        <ComboBox fx:id="typeAbonnementComboBox" prefWidth="200" promptText="Type" />
+                        <Label fx:id="prixAbonnementLabel" styleClass="section-subtitle" text="Prix: --" />
+                        <Button onAction="#handleCreerAbonnement" styleClass="btn-green" text="➕ Créer" />
+                        <Button onAction="#handleAfficherAbonnements" styleClass="btn-blue" text="📋 Afficher" />
                     </HBox>
 
-                    <TableView fx:id="abonnementsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="abonnementsTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="aboMembreCol" text="Membre" prefWidth="200"/>
-                            <TableColumn fx:id="aboTypeCol" text="Type" prefWidth="120"/>
-                            <TableColumn fx:id="aboDebutCol" text="Début" prefWidth="120"/>
-                            <TableColumn fx:id="aboFinCol" text="Fin" prefWidth="120"/>
-                            <TableColumn fx:id="aboValideCol" text="Valide" prefWidth="100"/>
+                            <TableColumn fx:id="aboMembreCol" prefWidth="200" text="Membre" />
+                            <TableColumn fx:id="aboTypeCol" prefWidth="120" text="Type" />
+                            <TableColumn fx:id="aboDebutCol" prefWidth="120" text="Début" />
+                            <TableColumn fx:id="aboFinCol" prefWidth="120" text="Fin" />
+                            <TableColumn fx:id="aboValideCol" prefWidth="100" text="Valide" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -196,50 +234,61 @@
             <!-- ============ TAB PAIEMENTS ============ -->
             <Tab text="💰 Paiements">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Paiements" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Paiements" />
 
                     <HBox spacing="10">
-                        <ComboBox fx:id="membrePaiementComboBox" promptText="Membre" prefWidth="200"/>
-                        <ComboBox fx:id="typePaiementComboBox" promptText="Type" prefWidth="150"/>
-                        <TextField fx:id="montantPaiementField" promptText="Montant (DT)" prefWidth="120"/>
-                        <Button text="💳 Effectuer" onAction="#handleEffectuerPaiement" styleClass="btn-green"/>
-                        <Button text="🔄 Afficher Paiements" onAction="#handleAfficherPaiements" styleClass="btn-info"/>
+                        <ComboBox fx:id="membrePaiementComboBox" prefWidth="200" promptText="Membre" />
+                        <ComboBox fx:id="typePaiementComboBox" prefWidth="150" promptText="Type" />
+                        <TextField fx:id="montantPaiementField" prefWidth="120" promptText="Montant (DT)" />
+                        <Button onAction="#handleEffectuerPaiement" styleClass="btn-green" text="💳 Effectuer" />
+                        <Button onAction="#handleAfficherPaiements" styleClass="btn-info" text="🔄 Afficher Paiements" />
                     </HBox>
 
-                    <TableView fx:id="paiementsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="paiementsTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="paiementIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="paiementMembreCol" text="Membre" prefWidth="200"/>
-                            <TableColumn fx:id="paiementTypeCol" text="Type" prefWidth="150"/>
-                            <TableColumn fx:id="paiementMontantCol" text="Montant" prefWidth="120"/>
+                            <TableColumn fx:id="paiementIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="paiementMembreCol" prefWidth="200" text="Membre" />
+                            <TableColumn fx:id="paiementTypeCol" prefWidth="150" text="Type" />
+                            <TableColumn fx:id="paiementMontantCol" prefWidth="120" text="Montant" />
                         </columns>
                     </TableView>
                 </VBox>
             </Tab>
 
             <!-- ============ TAB SÉANCES ============ -->
-            <Tab text="🏋️ Séances">
+            <Tab text="🏋 Séances">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Séances" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Séances" />
 
                     <GridPane hgap="10" vgap="10">
-                        <ComboBox fx:id="typeSeanceComboBox" promptText="Type" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <ComboBox fx:id="salleSeanceComboBox" promptText="Salle" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <ComboBox fx:id="coachSeanceComboBox" promptText="Coach" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <ComboBox fx:id="membreSeanceComboBox" promptText="Membre" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <TextField fx:id="dateSeanceField" promptText="Date (jj/mm/aaaa)" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <TextField fx:id="dureeSeanceField" promptText="Durée (heures)" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                        <TextField fx:id="coutSeanceField" promptText="Coût (DT)" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                        <TextField fx:id="capaciteSeanceField" promptText="Capacité" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <ComboBox fx:id="typeSeanceComboBox" promptText="Type" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="salleSeanceComboBox" promptText="Salle" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="coachSeanceComboBox" promptText="Coach" GridPane.rowIndex="1" />
+                        <ComboBox fx:id="membreSeanceComboBox" promptText="Membre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <TextField fx:id="dateSeanceField" promptText="Date (jj/mm/aaaa)" GridPane.rowIndex="2" />
+                        <TextField fx:id="dureeSeanceField" promptText="Durée (heures)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="coutSeanceField" promptText="Coût (DT)" GridPane.rowIndex="3" />
+                        <TextField fx:id="capaciteSeanceField" promptText="Capacité" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+   
+                          <Button onAction="#handleCreerSeance" styleClass="btn-green" text="➕ Créer Séance" GridPane.columnIndex="2" />
+                       <Button onAction="#handleAfficherSeances" text="Afficher Séances" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
                     </GridPane>
-
-                    <Button text="➕ Créer Séance" onAction="#handleCreerSeance" styleClass="btn-green"/>
-                    <Button text="Afficher Séances" onAction="#handleAfficherSeances" />
-                    <TableView fx:id="seancesTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="seancesTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="seanceIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="seanceTypeCol" text="Type" prefWidth="150"/>
-                            <TableColumn fx:id="seanceDateCol" text="Date" prefWidth="150"/>
+                            <TableColumn fx:id="seanceIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="seanceTypeCol" prefWidth="150" text="Type" />
+                            <TableColumn fx:id="seanceDateCol" prefWidth="150" text="Date" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -248,32 +297,41 @@
             <!-- ============ TAB PROGRAMMES ============ -->
             <Tab text="📋 Programmes">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Programmes d'Entraînement" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Programmes d'Entraînement" />
 
                     <HBox spacing="10">
-                        <ComboBox fx:id="coachProgrammeComboBox" promptText="Coach" prefWidth="200"/>
-                        <TextField fx:id="titreProgrammeField" promptText="Titre du programme" prefWidth="250"/>
-                        <Button text="➕ Créer Programme" onAction="#handleCreerProgramme" styleClass="btn-green"/>
+                        <ComboBox fx:id="coachProgrammeComboBox" prefWidth="200" promptText="Coach" />
+                        <TextField fx:id="titreProgrammeField" prefWidth="250" promptText="Titre du programme" />
+                        <Button onAction="#handleCreerProgramme" styleClass="btn-green" text="➕ Créer Programme" />
                         <!-- 👇 AJOUTEZ CETTE LIGNE -->
-                        <Button text="🔄 Afficher Programmes" onAction="#handleAfficherProgrammes" styleClass="btn-blue"/>
+                        <Button onAction="#handleAfficherProgrammes" styleClass="btn-blue" text="🔄 Afficher Programmes" />
                     </HBox>
 
-                    <Separator/>
+                    <Separator />
 
-                    <Label text="Ajouter un exercice" styleClass="section-subtitle"/>
+                    <Label styleClass="section-subtitle" text="Ajouter un exercice" />
                     <GridPane hgap="10" vgap="10">
-                        <TextField fx:id="nomExerciceField" promptText="Nom exercice" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="repetitionsField" promptText="Répétitions" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-                        <TextField fx:id="poidsField" promptText="Poids (kg)" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextField fx:id="dureeExerciceField" promptText="Durée (min)" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <TextField fx:id="nomExerciceField" promptText="Nom exercice" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="repetitionsField" promptText="Répétitions" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <TextField fx:id="poidsField" promptText="Poids (kg)" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="dureeExerciceField" promptText="Durée (min)" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   
+                       <Button onAction="#handleAjouterExercice" styleClass="btn-blue" text="➕ Ajouter Exercice" GridPane.columnIndex="2" />
+                  <columnConstraints>
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                     <ColumnConstraints />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints />
+                     <RowConstraints />
+                  </rowConstraints>
                     </GridPane>
 
-                    <Button text="➕ Ajouter Exercice" onAction="#handleAjouterExercice" styleClass="btn-blue"/>
-
-                    <TableView fx:id="programmesTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="programmesTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="progIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="progTitreCol" text="Titre" prefWidth="400"/>
+                            <TableColumn fx:id="progIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="progTitreCol" prefWidth="400" text="Titre" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -281,24 +339,24 @@
             <!-- ============ TAB RÉSERVATIONS ============ -->
             <Tab text="📅 Réservations">
                 <VBox spacing="15" style="-fx-padding: 20;">
-                    <Label text="Gestion des Réservations" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Gestion des Réservations" />
 
                     <HBox spacing="10">
-                        <ComboBox fx:id="membreReservationComboBox" promptText="Membre" prefWidth="200"/>
-                        <ComboBox fx:id="seanceReservationComboBox" promptText="Séance" prefWidth="300"/>
-                        <Button text="➕ Réserver" onAction="#handleCreerReservation" styleClass="btn-green"/>
+                        <ComboBox fx:id="membreReservationComboBox" prefWidth="200" promptText="Membre" />
+                        <ComboBox fx:id="seanceReservationComboBox" prefWidth="300" promptText="Séance" />
+                        <Button onAction="#handleCreerReservation" styleClass="btn-green" text="➕ Réserver" />
                     </HBox>
 
                     <HBox spacing="10">
-                        <Button text="✓ Confirmer" onAction="#handleConfirmerReservation" styleClass="btn-blue"/>
-                        <Button text="✗ Annuler" onAction="#handleAnnulerReservation" styleClass="btn-red"/>
+                        <Button onAction="#handleConfirmerReservation" styleClass="btn-blue" text="✓ Confirmer" />
+                        <Button onAction="#handleAnnulerReservation" styleClass="btn-red" text="✗ Annuler" />
                     </HBox>
 
-                    <TableView fx:id="reservationsTable" VBox.vgrow="ALWAYS" styleClass="table-modern">
+                    <TableView fx:id="reservationsTable" styleClass="table-modern" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="resIdCol" text="ID" prefWidth="60"/>
-                            <TableColumn fx:id="resMembreCol" text="Membre" prefWidth="200"/>
-                            <TableColumn fx:id="resSeanceCol" text="Séance" prefWidth="300"/>
+                            <TableColumn fx:id="resIdCol" prefWidth="60" text="ID" />
+                            <TableColumn fx:id="resMembreCol" prefWidth="200" text="Membre" />
+                            <TableColumn fx:id="resSeanceCol" prefWidth="300" text="Séance" />
                         </columns>
                     </TableView>
                 </VBox>
@@ -307,34 +365,34 @@
             <!-- ============ TAB STATISTIQUES ============ -->
             <Tab text="📊 Statistiques">
                 <VBox spacing="20" style="-fx-padding: 20;">
-                    <Label text="Statistiques Générales" styleClass="section-title"/>
+                    <Label styleClass="section-title" text="Statistiques Générales" />
 
                     <HBox spacing="20">
                         <VBox spacing="5" styleClass="stats-card">
-                            <Label text="💵 Revenu"/>
-                            <Label fx:id="revenuTotalLabel" text="0.00 DT" styleClass="stats-value-green"/>
+                            <Label text="💵 Revenu" />
+                            <Label fx:id="revenuTotalLabel" styleClass="stats-value-green" text="0.00 DT" />
                         </VBox>
                         <VBox spacing="5" styleClass="stats-card">
-                            <Label text="💸 Dépenses"/>
-                            <Label fx:id="depenseTotalLabel" text="0.00 DT" styleClass="stats-value-red"/>
+                            <Label text="💸 Dépenses" />
+                            <Label fx:id="depenseTotalLabel" styleClass="stats-value-red" text="0.00 DT" />
                         </VBox>
                         <VBox spacing="5" styleClass="stats-card">
-                            <Label text="📈 Bénéfice"/>
-                            <Label fx:id="beneficeNetLabel" text="0.00 DT" styleClass="stats-value"/>
+                            <Label text="📈 Bénéfice" />
+                            <Label fx:id="beneficeNetLabel" styleClass="stats-value" text="0.00 DT" />
                         </VBox>
                         <VBox spacing="5" styleClass="stats-card">
-                            <Label text="👥 Membres"/>
-                            <Label fx:id="nombreMembresLabel" text="0" styleClass="stats-value"/>
+                            <Label text="👥 Membres" />
+                            <Label fx:id="nombreMembresLabel" styleClass="stats-value" text="0" />
                         </VBox>
                         <VBox spacing="5" styleClass="stats-card">
-                            <Label text="🏋️ Séances"/>
-                            <Label fx:id="nombreSeancesLabel" text="0" styleClass="stats-value"/>
+                            <Label text="🏋 Séances" />
+                            <Label fx:id="nombreSeancesLabel" styleClass="stats-value" text="0" />
                         </VBox>
                     </HBox>
 
-                    <Button text="🔄 Calculer" onAction="#handleCalculerStatistiques" styleClass="btn-blue"/>
+                    <Button onAction="#handleCalculerStatistiques" styleClass="btn-blue" text="🔄 Calculer" />
 
-                    <TextArea fx:id="statsDetailsArea" VBox.vgrow="ALWAYS" editable="false" styleClass="stats-text"/>
+                    <TextArea fx:id="statsDetailsArea" editable="false" styleClass="stats-text" VBox.vgrow="ALWAYS" />
                 </VBox>
             </Tab>
 
@@ -344,7 +402,7 @@
     <!-- ============ FOOTER ============ -->
     <bottom>
         <HBox styleClass="footer">
-            <Label fx:id="messageLabel" text="✅ Bienvenue !"/>
+            <Label fx:id="messageLabel" text="✅ Bienvenue !" />
         </HBox>
     </bottom>
 

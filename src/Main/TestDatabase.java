@@ -9,25 +9,20 @@ import java.util.List;
 public class TestDatabase {
 
     public static void main(String[] args) {
-        // Test de connexion
         DatabaseConnection.getConnection();
 
-        // Test MembreDAO
         System.out.println("\n=== TEST MEMBRE DAO ===");
         MembreDAO membreDAO = new MembreDAO();
 
-        // Ajouter un membre
         Membre nouveauMembre = new Membre(0, "Test", "User", "test@example.com", "22999999");
         membreDAO.ajouterMembre(nouveauMembre);
 
-        // Récupérer tous les membres
         List<Membre> membres = membreDAO.getAllMembres();
         System.out.println("\nListe des membres:");
         for (Membre m : membres) {
             m.afficherInfo();
         }
 
-        // Test CoachDAO
         System.out.println("\n=== TEST COACH DAO ===");
         CoachDAO coachDAO = new CoachDAO();
 
@@ -37,7 +32,6 @@ public class TestDatabase {
             c.afficherInfo();
         }
 
-        // Test SalleDAO
         System.out.println("\n=== TEST SALLE DAO ===");
         SalleDAO salleDAO = new SalleDAO();
 
@@ -47,7 +41,6 @@ public class TestDatabase {
             s.afficherDetailsSalle();
         }
 
-        // Fermer la connexion
         DatabaseConnection.closeConnection();
     }
 }

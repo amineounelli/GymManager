@@ -1,0 +1,86 @@
+/* ========================= PALETTE COLORS =========================== */
+.root {
+    -fx-primary: #FF6B35;
+    -fx-bg-light: #F8F9FC;
+    -fx-text-dark: #2D2A3E;
+    -fx-muted: #A0A0AB;
+}
+
+/* ========================= ROOT BACKGROUND =========================== */
+.root {
+    -fx-font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
+    -fx-background-color: -fx-bg-light;
+}
+
+/* ========================= LOGIN CARD =========================== */
+.login-card {
+    /* Fancy gradient background */
+    -fx-background-color: linear-gradient(135deg, #ffffff 0%, #F0F3F7 100%);
+
+    -fx-background-radius: 16;
+    -fx-padding: 30 40;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 16, 0, 0, 2);
+}
+
+.login-card:hover {
+    -fx-background-color: linear-gradient(135deg, #FFFFFF 0%, #E6EAF0 100%);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 20, 0, 0, 4);
+    -fx-translate-y: -2;
+    -fx-transition: all 0.25s ease-in-out;
+}
+
+.login-title {
+    -fx-text-fill: -fx-text-dark;
+    -fx-font-size: 26px;
+    -fx-font-weight: 700;
+}
+
+/* ========================= TEXTFIELDS =========================== */
+.text-field,
+.password-field {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #E5E8EF;
+    -fx-border-radius: 10;
+    -fx-border-width: 1.5;
+    -fx-padding: 12 16;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: -fx-muted;
+}
+
+.text-field:focused,
+.password-field:focused {
+    -fx-border-color: -fx-primary;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 107, 53, 0.15), 12, 0, 0, 0);
+}
+
+/* ========================= LOGIN BUTTON =========================== */
+.button {
+    -fx-background-radius: 10;
+    -fx-padding: 12 20;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-text-fill: white;
+    -fx-background-color: -fx-primary;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 6, 0, 0, 2);
+}
+
+.button:hover {
+    -fx-background-color: #E85F30;
+    -fx-effect: dropshadow(three-pass-box, rgba(255, 107, 53, 0.25), 12, 0, 0, 3);
+    -fx-translate-y: -1;
+}
+
+.button:pressed {
+    -fx-translate-y: 0;
+    -fx-background-color: #CC542A;
+}
+
+/* ========================= ERROR MESSAGE =========================== */
+.message-label {
+    -fx-text-fill: red;
+    -fx-font-size: 13px;
+    -fx-font-weight: 600;
+}

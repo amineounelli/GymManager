@@ -1,50 +1,44 @@
-/* ========================= PALETTE DE COULEURS GYM MODERNE =========================== */
-/*
-  Primaire: #FF6B35 (Orange énergique)
-  Fond sidebar: #4A3F5C (Violet foncé)
-  Fond principal: #F8F9FC (Gris très clair moderne)
-  Cartes: Couleurs vives et pastel
-*/
-
-/* ========================= GÉNÉRAL =========================== */
+/* ========================= PALETTE GYM ULTRA PREMIUM 2025 =========================== */
 .root {
     -fx-font-family: "Inter", "Segoe UI", "Roboto", sans-serif;
     -fx-background-color: #F8F9FC;
     -fx-font-size: 14px;
 }
 
-/* ========================= MENU BAR =========================== */
+/* ========================= MENU BAR – GLASSY DEEP PURPLE =========================== */
 .menu-bar {
-    -fx-background-color: #4A3F5C;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #5d4f78, #3d3350);
     -fx-padding: 0;
     -fx-border-width: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 30, 0.3, 0, 10);
 }
 
 .menu-bar .label {
-    -fx-text-fill: rgba(255, 255, 255, 0.9);
-    -fx-font-weight: 600;
-    -fx-font-size: 13px;
-}
-
-.menu-bar .menu {
-    -fx-padding: 10 18;
+    -fx-text-fill: white;
+    -fx-font-weight: 700;
+    -fx-font-size: 13.5px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 2, 0, 0, 1);
 }
 
 .menu-bar .menu:hover {
-    -fx-background-color: rgba(255, 107, 53, 0.15);
+    -fx-background-color: rgba(255, 107, 53, 0.3);
+    -fx-background-radius: 8;
+    -fx-effect: innershadow(gaussian, #ff6b35, 20, 0.5, 0, 0);
 }
 
 .menu-bar .menu:showing {
-    -fx-background-color: rgba(255, 107, 53, 0.25);
+    -fx-background-color: rgba(255, 107, 53, 0.45);
 }
 
+/* ========================= CONTEXT MENU – FROSTED GLASS =========================== */
 .context-menu {
-    -fx-background-color: white;
+    -fx-background-color: rgba(255, 255, 255, 0.95);
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
     -fx-border-color: #E5E8EF;
     -fx-border-width: 1;
-    -fx-background-radius: 12;
-    -fx-border-radius: 12;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 20, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 40, 0.35, 0, 12);
+    -fx-padding: 8;
 }
 
 .menu-item {
@@ -53,7 +47,8 @@
 }
 
 .menu-item:hover {
-    -fx-background-color: #FFF5F2;
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #fff5f2, #ffebe3);
+    -fx-background-radius: 12;
 }
 
 .menu-item:hover .label {
@@ -64,18 +59,18 @@
     -fx-text-fill: #2D2A3E;
 }
 
-/* ========================= TOP BAR / HEADER =========================== */
+/* ========================= TOP BAR – EPIC GRADIENT =========================== */
 .top-bar {
-    -fx-background-color: #4A3F5C;
-    -fx-padding: 25 35;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 2);
+    -fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #6b5b95, #ff6b35, #ff8c42);
+    -fx-padding: 30 40;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 40, 0.4, 0, 15);
 }
 
 .header-title {
     -fx-text-fill: white;
-    -fx-font-size: 28px;
-    -fx-font-weight: 700;
-    -fx-letter-spacing: -0.5;
+    -fx-font-size: 34px;
+    -fx-font-weight: 900;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 6, 0, 0, 3);
 }
 
 /* ========================= TAB PANE MODERNE =========================== */
@@ -85,24 +80,26 @@
 }
 
 .tab-pane .tab-header-area {
-    -fx-padding: 0 30 0 30;
-    -fx-background-color: white;
+    -fx-padding: 12 30 0 30;
+    -fx-background-color: rgba(255,255,255,0.7);
     -fx-border-width: 0 0 1px 0;
     -fx-border-color: #E5E8EF;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 5);
 }
 
 .tab-pane .tab-header-background {
-    -fx-background-color: white;
+    -fx-background-color: rgba(255,255,255,0.7);
 }
 
 .tab-pane .headers-region {
-    -fx-background-color: white;
+    -fx-background-color: rgba(255,255,255,0.7);
 }
 
 .tab-pane .tab {
     -fx-background-color: transparent;
-    -fx-background-radius: 0;
-    -fx-padding: 16 24;
+    -fx-background-radius: 16 16 0 0;
+    -fx-padding: 16 32;
     -fx-cursor: hand;
     -fx-border-width: 0 0 3px 0;
     -fx-border-color: transparent;
@@ -115,27 +112,31 @@
 }
 
 .tab-pane .tab:hover {
-    -fx-background-color: #FAFBFD;
-}
-
-.tab-pane .tab:hover .tab-label {
-    -fx-text-fill: #FF6B35;
+    -fx-background-color: rgba(255,107,53,0.12);
 }
 
 .tab-pane .tab:selected {
     -fx-background-color: white;
     -fx-border-width: 0 0 3px 0;
     -fx-border-color: #FF6B35;
+    -fx-effect: innershadow(gaussian, #ff6b35, 15, 0.3, 0, 0);
 }
 
 .tab-pane .tab:selected .tab-label {
     -fx-text-fill: #2D2A3E;
-    -fx-font-weight: 700;
+    -fx-font-weight: 800;
 }
 
 .tab-pane .tab-content-area {
     -fx-background-color: #F8F9FC;
     -fx-padding: 0;
+}
+
+/* Underline animation */
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent transparent #FF6B35 transparent;
+    -fx-border-width: 4;
+    -fx-border-insets: -4 -4 -8 -4;
 }
 
 /* ========================= SECTIONS & TITLES =========================== */
@@ -153,25 +154,27 @@
     -fx-text-fill: #FF6B35;
 }
 
-/* ========================= BUTTONS MODERNES =========================== */
+/* ========================= BUTTONS – PREMIUM GRADIENT + LIFT =========================== */
 .button {
-    -fx-background-radius: 10;
-    -fx-padding: 12 24;
+    -fx-background-radius: 18;
+    -fx-padding: 16 36;
     -fx-cursor: hand;
-    -fx-font-weight: 600;
-    -fx-font-size: 14px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 2);
+    -fx-font-weight: 700;
+    -fx-font-size: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0.2, 0, 6);
 }
 
 .btn-green {
-    -fx-background-color: #10B981;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #34d399, #10b981);
     -fx-text-fill: white;
 }
 
 .btn-green:hover {
-    -fx-background-color: #059669;
-    -fx-effect: dropshadow(three-pass-box, rgba(16, 185, 129, 0.3), 12, 0, 0, 4);
-    -fx-translate-y: -1;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #10b981, #059669);
+    -fx-effect: dropshadow(gaussian, #10b981, 30, 0.5, 0, 0);
+    -fx-translate-y: -4;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .btn-green:pressed {
@@ -180,14 +183,16 @@
 }
 
 .btn-red {
-    -fx-background-color: #EF4444;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #f87171, #ef4444);
     -fx-text-fill: white;
 }
 
 .btn-red:hover {
-    -fx-background-color: #DC2626;
-    -fx-effect: dropshadow(three-pass-box, rgba(239, 68, 68, 0.3), 12, 0, 0, 4);
-    -fx-translate-y: -1;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #ef4444, #dc2626);
+    -fx-effect: dropshadow(gaussian, #ef4444, 30, 0.5, 0, 0);
+    -fx-translate-y: -4;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .btn-red:pressed {
@@ -196,14 +201,16 @@
 }
 
 .btn-blue {
-    -fx-background-color: #3B82F6;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #60a5fa, #3b82f6);
     -fx-text-fill: white;
 }
 
 .btn-blue:hover {
-    -fx-background-color: #2563EB;
-    -fx-effect: dropshadow(three-pass-box, rgba(59, 130, 246, 0.3), 12, 0, 0, 4);
-    -fx-translate-y: -1;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #3b82f6, #2563eb);
+    -fx-effect: dropshadow(gaussian, #3b82f6, 30, 0.5, 0, 0);
+    -fx-translate-y: -4;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
 }
 
 .btn-blue:pressed {
@@ -212,8 +219,7 @@
 }
 
 /* ========================= FORMS MODERNES =========================== */
-.text-field,
-.password-field {
+.text-field, .password-field {
     -fx-background-color: white;
     -fx-background-radius: 10;
     -fx-border-color: #E5E8EF;
@@ -224,8 +230,7 @@
     -fx-prompt-text-fill: #A0A0AB;
 }
 
-.text-field:focused,
-.password-field:focused {
+.text-field:focused, .password-field:focused {
     -fx-border-color: #FF6B35;
     -fx-border-width: 2;
     -fx-effect: dropshadow(three-pass-box, rgba(255, 107, 53, 0.15), 12, 0, 0, 0);
@@ -282,8 +287,8 @@
     -fx-background-color: white;
     -fx-border-color: transparent;
     -fx-border-radius: 16;
-    -fx-background-radius: 16;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 12, 0, 0, 2);
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 35, 0.2, 0, 12);
 }
 
 .table-view {
@@ -293,12 +298,11 @@
 }
 
 .table-view .column-header-background {
-    -fx-background-color: #FAFBFD;
-    -fx-background-radius: 16 16 0 0;
+    -fx-background-color: linear-gradient(from 0% 0% to 0% 100%, #f8f9fc, #ffffff);
+    -fx-background-radius: 24 24 0 0;
 }
 
-.table-view .column-header,
-.table-view .filler {
+.table-view .column-header, .table-view .filler {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 1 0;
@@ -328,16 +332,16 @@
 }
 
 .table-row-cell:odd {
-    -fx-background-color: #FAFBFD;
+    -fx-background-color: #fdfdfd;
 }
 
 .table-row-cell:hover {
-    -fx-background-color: #F8F9FC;
+    -fx-background-color: #fff8f5;
     -fx-cursor: hand;
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #FFF5F2;
+    -fx-background-color: #ffe8e0;
 }
 
 .table-row-cell:selected .table-cell {
@@ -346,8 +350,7 @@
 }
 
 /* Scrollbars minimalistes */
-.table-view .scroll-bar:vertical,
-.table-view .scroll-bar:horizontal {
+.table-view .scroll-bar:vertical, .table-view .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
 
@@ -359,14 +362,15 @@
 .table-view .scroll-bar .thumb {
     -fx-background-color: #E5E8EF;
     -fx-background-radius: 4;
+    -fx-min-width: 6;
+    -fx-min-height: 6;
 }
 
 .table-view .scroll-bar .thumb:hover {
     -fx-background-color: #D1D5DB;
 }
 
-.table-view .scroll-bar .increment-button,
-.table-view .scroll-bar .decrement-button {
+.table-view .scroll-bar .increment-button, .table-view .scroll-bar .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
@@ -393,19 +397,21 @@ Label {
 
 /* ========================= STATISTIQUES CARDS COLORÉES =========================== */
 .stats-card {
-    -fx-background-color: white;
-    -fx-padding: 24;
-    -fx-background-radius: 16;
-    -fx-border-color: #E5E8EF;
-    -fx-border-width: 1;
-    -fx-border-radius: 16;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 8, 0, 0, 2);
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-padding: 28;
+    -fx-background-radius: 24;
+    -fx-border-color: rgba(255,107,53,0.15);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 30, 0.25, 0, 10);
     -fx-min-width: 160;
 }
 
 .stats-card:hover {
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 16, 0, 0, 4);
-    -fx-translate-y: -2;
+    -fx-effect: dropshadow(gaussian, rgba(255,107,53,0.3), 40, 0.4, 0, 15);
+    -fx-translate-y: -8;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
 }
 
 .stats-card Label {
@@ -415,20 +421,21 @@ Label {
 }
 
 .stats-value {
-    -fx-font-size: 32px;
-    -fx-font-weight: 700;
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
     -fx-text-fill: #2D2A3E;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
 }
 
 .stats-value-green {
-    -fx-font-size: 32px;
-    -fx-font-weight: 700;
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
     -fx-text-fill: #10B981;
 }
 
 .stats-value-red {
-    -fx-font-size: 32px;
-    -fx-font-weight: 700;
+    -fx-font-size: 36px;
+    -fx-font-weight: 900;
     -fx-text-fill: #EF4444;
 }
 
@@ -466,8 +473,7 @@ Label {
 }
 
 /* ========================= SCROLLBAR MINIMALISTE =========================== */
-.scroll-bar:vertical,
-.scroll-bar:horizontal {
+.scroll-bar:vertical, .scroll-bar:horizontal {
     -fx-background-color: transparent;
 }
 
@@ -477,18 +483,18 @@ Label {
 }
 
 .scroll-bar .thumb {
-    -fx-background-color: #E5E8EF;
-    -fx-background-radius: 4;
+    -fx-background-color: rgba(229, 232, 239, 0.7);
+    -fx-background-radius: 10;
     -fx-min-width: 6;
     -fx-min-height: 6;
 }
 
-.scroll-bar .thumb:hover {
+.scroll-bar .thumb:hover,
+.scroll-bar .thumb:pressed {
     -fx-background-color: #FF6B35;
 }
 
-.scroll-bar .increment-button,
-.scroll-bar .decrement-button {
+.scroll-bar .increment-button, .scroll-bar .decrement-button {
     -fx-background-color: transparent;
     -fx-padding: 0;
 }
@@ -541,26 +547,32 @@ Label {
 /* Couleurs pour les événements */
 .event-green {
     -fx-background-color: #A7F3D0;
+    -fx-effect: innershadow(gaussian, rgba(16,185,129,0.4), 20, 0.4, 0, 0);
 }
 
 .event-blue {
     -fx-background-color: #BFDBFE;
+    -fx-effect: innershadow(gaussian, rgba(59,130,246,0.4), 20, 0.4, 0, 0);
 }
 
 .event-yellow {
     -fx-background-color: #FDE68A;
+    -fx-effect: innershadow(gaussian, rgba(251,191,36,0.4), 20, 0.4, 0, 0);
 }
 
 .event-pink {
     -fx-background-color: #FBCFE8;
+    -fx-effect: innershadow(gaussian, rgba(236,72,153,0.4), 20, 0.4, 0, 0);
 }
 
 .event-orange {
     -fx-background-color: #FED7AA;
+    -fx-effect: innershadow(gaussian, #ff6b35, 20, 0.4, 0, 0);
 }
 
 .event-purple {
     -fx-background-color: #DDD6FE;
+    -fx-effect: innershadow(gaussian, rgba(139,92,246,0.4), 20, 0.4, 0, 0);
 }
 
 /* ========================= CHECK BOX & RADIO BUTTON MODERNE =========================== */
@@ -600,10 +612,11 @@ Label {
 .badge {
     -fx-background-color: #FF6B35;
     -fx-text-fill: white;
-    -fx-background-radius: 20;
-    -fx-padding: 4 10;
-    -fx-font-size: 11px;
-    -fx-font-weight: 700;
+    -fx-background-radius: 30;
+    -fx-padding: 7 16;
+    -fx-font-size: 12px;
+    -fx-font-weight: 800;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 3);
 }
 
 .badge-success {
@@ -620,13 +633,13 @@ Label {
 
 /* ========================= CARD GLASSMORPHISM =========================== */
 .glass-card {
-    -fx-background-color: rgba(255, 255, 255, 0.7);
-    -fx-background-radius: 20;
-    -fx-padding: 28;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 16, 0, 0, 4);
-    -fx-border-color: rgba(255, 255, 255, 0.3);
-    -fx-border-width: 1;
-    -fx-border-radius: 20;
+    -fx-background-color: rgba(255, 255, 255, 0.78);
+    -fx-background-radius: 28;
+    -fx-padding: 32;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 40, 0.3, 0, 15);
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-width: 2;
+    -fx-border-radius: 28;
 }
 
 /* ========================= UTILITY CLASSES =========================== */

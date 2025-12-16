@@ -22,13 +22,6 @@ public class Salle {
         listeEquipements.add(e);
     }
 
-    public void supprimerEquipement(Equipement e) {
-        listeEquipements.remove(e);
-    }
-
-    public boolean verifierDisponibilite() {
-        return true; // pour simplifier
-    }
 
     public void afficherDetailsSalle() {
         System.out.println("=== Détails Salle ===");
